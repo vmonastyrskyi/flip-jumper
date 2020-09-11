@@ -1,30 +1,36 @@
 ﻿using System;
+using Game.Player;
 using UnityEngine;
 
 namespace Game
 {
     public class CameraMoving : MonoBehaviour
     {
-        private const float CameraMovingTime = 4f;
+        private const float CameraMovingTime = 4;
 
-        public Transform target;
-        public Vector3 offset;
+        [SerializeField] private Vector3 offset;
 
+        private Transform _target;
         private Vector3 _newPosition;
         private PlayerState _playerState;
+
+        public Transform Target
+        {
+            set => _target = value;
+        }
 
         private void Start()
         {
             _newPosition = transform.position;
 
-            GameEventSystem.current.OnSpawnDirectionChanged += CalculateNewPosition;
+            GameEventSystem.instance.OnSpawnDirectionChanged += CalculateNewPosition;
 
-            PlayerEventSystem.current.OnStateChanged += state => { _playerState = state; };
+            PlayerEventSystem.instance.OnStateChanged += state => { _playerState = state; };
         }
 
         private void CalculateNewPosition(SpawnDirection direction)
         {
-            var position = target.position;
+            var position = _target.position;
             switch (direction)
             {
                 case SpawnDirection.Left:

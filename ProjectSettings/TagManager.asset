@@ -10,6 +10,9 @@ TagManager:
   - UI
   - ScoreUIElement
   - HintUIElement
+  - Terrain
+  - Lava
+  - Water
   layers:
   - Default
   - TransparentFX

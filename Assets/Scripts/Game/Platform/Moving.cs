@@ -9,8 +9,6 @@ namespace Game.Platform
         private const float MovementTime = 2f;
         
         private SpawnDirection _spawnDirection;
-        private Vector3 _originalPosition;
-        private Vector3 _currentPosition;
         private Vector3 _finalPosition;
         private float _distance = 4f;
 

@@ -14,20 +14,9 @@ namespace Game
         Right
     }
 
-    internal enum PlatformType
-    {
-        Default,
-        Moving,
-        FadeOut
-    }
-
     public class PlatformGenerator : MonoBehaviour
     {
-        public GameObject[] platformPrefabs;
-
-        public Material defaultPlatformMaterial;
-        public Material movingPlatformMaterial;
-        public Material fadeOutPlatformMaterial;
+        [SerializeField] private GameObject[] platformPrefabs;
 
         private readonly List<GameObject> _platforms = new List<GameObject>();
         private readonly Random _random = new Random();
@@ -36,7 +25,7 @@ namespace Game
         {
             SpawnPlatforms();
 
-            GameEventSystem.current.OnCreatePlatform += GeneratePlatform;
+            GameEventSystem.instance.OnCreatePlatform += GeneratePlatform;
         }
 
         private void SpawnPlatforms()
@@ -47,26 +36,7 @@ namespace Game
 
         private void GeneratePlatform()
         {
-            var platform = CreatePlatform((SpawnDirection) _random.Next(0, 2));
-            var mesh = platform.GetComponentInChildren<MeshRenderer>();
-            
-            switch ((PlatformType) _random.Next(0, 3))
-            {
-                case PlatformType.Default:
-                    mesh.material = defaultPlatformMaterial;
-                    break;
-                case PlatformType.Moving:
-                    mesh.material = movingPlatformMaterial;
-                    platform.AddComponent<Moving>();
-                    break;
-                case PlatformType.FadeOut:
-                    mesh.material = fadeOutPlatformMaterial;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            _platforms.Add(platform);
+            _platforms.Add(CreatePlatform((SpawnDirection) _random.Next(0, 2)));
 
             if (_platforms.Count > 4)
             {
@@ -101,7 +71,7 @@ namespace Game
             switch (spawnDirection)
             {
                 case SpawnDirection.Left:
-                    GameEventSystem.current.ChangeSpawnDirection(SpawnDirection.Left);
+                    GameEventSystem.instance.ChangeSpawnDirection(SpawnDirection.Left);
                     platform = Instantiate(
                         platformPrefabs[randomPlatformPrefabIndex],
                         new Vector3(position.x, position.y, position.z + platformDistance),
@@ -109,7 +79,7 @@ namespace Game
                     platform.GetComponent<PlatformManager>().Direction = SpawnDirection.Left;
                     break;
                 case SpawnDirection.Right:
-                    GameEventSystem.current.ChangeSpawnDirection(SpawnDirection.Right);
+                    GameEventSystem.instance.ChangeSpawnDirection(SpawnDirection.Right);
                     platform = Instantiate(
                         platformPrefabs[randomPlatformPrefabIndex],
                         new Vector3(position.x + platformDistance, position.y, position.z),

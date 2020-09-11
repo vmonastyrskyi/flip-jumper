@@ -5,11 +5,11 @@ namespace Game
 {
     public class GameEventSystem : MonoBehaviour
     {
-        public static GameEventSystem current;
+        public static GameEventSystem instance;
 
         private void Awake()
         {
-            current = this;
+            instance = this;
         }
 
         public event Action<SpawnDirection> OnSpawnDirectionChanged;
