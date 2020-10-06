@@ -1,112 +1,75 @@
-﻿using System.Collections;
-using Game.Player;
-using Loader;
-using TMPro;
+﻿using Game.Platform;
+using Scriptable_Objects;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Scene = UnityEngine.SceneManagement.Scene;
+using Random = System.Random;
 
 namespace Game
 {
     public class GameController : MonoBehaviour
     {
         private const float StartPosition = 16;
-        private const float StartMenuDelay = 2;
         private const float InitialDownVelocity = 9.81f;
-
-        public static GameController instance;
+        private const int ScoreToCoin = 5;
 
         [SerializeField] private GameObject pit;
 
         private Camera _mainCamera;
+        private SpawnDirection _currentSpawnDirection;
+        private GameObject _player;
         private int _score;
+        private int _coins;
 
-        // UI
-        private GameObject _scoreUiElement;
-        private TextMeshProUGUI _scoreText;
-        private Animator _scoreAnimator;
-        private GameObject _hintUiElement;
-        private Animator _hintAnimator;
-
+        private readonly Random _random = new Random();
+        
         private void Awake()
         {
-            instance = this;
+            Time.timeScale = 1;
         }
 
         private void Start()
         {
-            _scoreUiElement = GameObject.FindWithTag("ScoreUIElement");
-            _scoreText = _scoreUiElement.GetComponent<TextMeshProUGUI>();
-            _scoreAnimator = _scoreUiElement.GetComponent<Animator>();
-
-            _hintUiElement = GameObject.FindWithTag("HintUIElement");
-            _hintAnimator = _hintUiElement.GetComponent<Animator>();
-
-            GameEventSystem.instance.OnIncreaseScore += IncreaseScore;
-
-            PlayerEventSystem.instance.OnStateChanged += HideHint;
+            _currentSpawnDirection = SpawnDirection.Right;
             
-            PlayerEventSystem.instance.OnStateChanged += GameOver;
-        }
+            SpawnPlayer();
+            SetCameraTarget();
+            SetPitTarget();
 
-        private void IncreaseScore(int points)
-        {
-            _scoreText.SetText((_score += points).ToString());
-            _scoreAnimator.Play("Increased");
-        }
-
-        private void HideHint(PlayerState state)
-        {
-            if (state != PlayerState.Start)
-                _hintAnimator.Play("Hide");
-        }
-        
-        private void GameOver(PlayerState state)
-        {
-            if (state == PlayerState.Dead)
+            PlatformEventSystem.instance.OnVisited += () =>
             {
-                Debug.Log("Game Over");
-                StartCoroutine(LoadMenu());
-            }
+                _currentSpawnDirection = (SpawnDirection) _random.Next(0, 2);
+
+                GameEventSystem.instance.MoveCamera(_currentSpawnDirection);
+                GameEventSystem.instance.CreatePlatform(_currentSpawnDirection);
+                GameEventSystem.instance.ChangeDirection(_currentSpawnDirection);
+                GameEventSystem.instance.UpdateScore(++_score);
+
+                if (_score % ScoreToCoin == 0)
+                    GameEventSystem.instance.UpdateCoins(++_coins);
+
+                TempDataManager.instance.EarnedScore = _score;
+                TempDataManager.instance.EarnedCoins = _coins;
+            };
         }
 
-        private void OnEnable()
+        private void SpawnPlayer()
         {
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            _player = Instantiate(
+                DataManager.instance.UserData.SelectedCharacter.Prefab,
+                Vector3.up * StartPosition,
+                Quaternion.identity);
+            // _player.GetComponent<Rigidbody>().velocity = Vector3.down * InitialDownVelocity;
         }
 
-        private void OnDisable()
+        private void SetCameraTarget()
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
+            _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+            if (_mainCamera != null)
+                _mainCamera.GetComponent<CameraMoving>().Target = _player.transform;
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private void SetPitTarget()
         {
-            if (mode == LoadSceneMode.Single)
-            {
-                var player = Instantiate(
-                    DataManager.instance.SelectedCharacter,
-                    Vector3.up * StartPosition,
-                    Quaternion.identity);
-                player.GetComponent<Rigidbody>().velocity = Vector3.down * InitialDownVelocity;
-
-                _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-                if (_mainCamera != null)
-                    _mainCamera.GetComponent<CameraMoving>().Target = player.transform;
-                // var terrain = GameObject.FindGameObjectWithTag("Terrain");
-                // var terrainPosition = terrain.transform.position;
-                // terrain.transform.position =
-                // new Vector3(terrainPosition.x + 4, terrainPosition.y, terrainPosition.y + 2);
-                // terrain.transform.parent = _mainCamera.transform;
-                pit.GetComponent<PlayerFollowing>().Target = player.transform;
-            }
-        }
-
-        private static IEnumerator LoadMenu()
-        {
-            yield return new WaitForSeconds(StartMenuDelay);
-            UiManager.instance.uiPage = UiPage.HomeOrPlay;
-            SceneSystem.instance.LoadMenu();
+            pit.GetComponent<PlayerFollowing>().Target = _player.transform;
         }
     }
 }

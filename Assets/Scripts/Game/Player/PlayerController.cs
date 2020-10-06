@@ -10,20 +10,17 @@ namespace Game.Player
         Start,
         Idle,
         PrepareToJump,
-        Jumped,
+        Jumping,
         Stepped,
         Dead
     }
 
     public class PlayerController : MonoBehaviour
     {
-        private const float MaxJumpDistance = 12f;
-        private const float JumpSpeed = 1.125f;
-        private const float InitialFallVelocity = 9.81f / 1.75f;
+        private const float MaxJumpDistance = 12;
+        private const float MinJumpDistance = 1;
+        private const float JumpTime = 1.125f;
 
-        [SerializeField] private ParticleSystem steppedEffectParticle;
-
-        private Rigidbody _rigidbody;
         private Transform _centerPivot;
         private Transform _downPivot;
         private Animator _animator;
@@ -33,33 +30,34 @@ namespace Game.Player
         private Vector3 _p0;
         private Vector3 _p1;
         private Vector3 _p2;
-        private float _jumpDistance;
-        private float _jumpTime;
-        private bool _isJumping;
+        private float _jumpDistance = MinJumpDistance;
+        private float _prepareJumpTime;
         private bool _isGrounded;
 
         private static readonly int IsStepped = Animator.StringToHash("IsStepped");
         private static readonly int PrepareJump = Animator.StringToHash("PrepareJump");
 
         // TODO Debug
-        private const int PositionCount = 50;
-        private readonly Vector3[] _positions = new Vector3[50];
-        private LineRenderer _lineRenderer;
+        // private const int PositionCount = 50;
+        // private readonly Vector3[] _positions = new Vector3[50];
+        // private LineRenderer _lineRenderer;
 
-        private void Start()
+        private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
             _centerPivot = transform.GetChild(0);
             _downPivot = _centerPivot.GetChild(0);
             _animator = _centerPivot.GetComponent<Animator>();
 
             // TODO Debug
-            _lineRenderer = GetComponent<LineRenderer>();
-            _lineRenderer.positionCount = PositionCount;
-            _lineRenderer.startWidth = 0;
-            _lineRenderer.endWidth = .25f;
+            // _lineRenderer = GetComponent<LineRenderer>();
+            // _lineRenderer.positionCount = PositionCount;
+            // _lineRenderer.startWidth = 0;
+            // _lineRenderer.endWidth = .25f;
+        }
 
-            GameEventSystem.instance.OnSpawnDirectionChanged += Turn;
+        private void Start()
+        {
+            GameEventSystem.instance.OnDirectionChange += Turn;
         }
 
         private void Turn(SpawnDirection newSpawnDirection)
@@ -72,10 +70,10 @@ namespace Game.Player
                 switch (_spawnDirection)
                 {
                     case SpawnDirection.Left:
-                        transform.DORotate(new Vector3(0, -90, 0), .33f);
+                        transform.DORotate(new Vector3(0, -90, 0), .33f).SetEase(Ease.InOutSine);
                         break;
                     case SpawnDirection.Right:
-                        transform.DORotate(new Vector3(0, 0, 0), .33f);
+                        transform.DORotate(new Vector3(0, 0, 0), .33f).SetEase(Ease.InOutSine);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -94,81 +92,71 @@ namespace Game.Player
 
         private void HandleJump()
         {
-            var isIdle = _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
-            var isPrepareJump = _animator.GetCurrentAnimatorStateInfo(0).IsName("PrepareJump");
-            var isStepped = _animator.GetBool(IsStepped);
-
+            if (!_isGrounded) return;
+            
             if (Input.touchCount > 0)
             {
                 var touch = Input.GetTouch(0);
-                if (_isGrounded && isIdle && !isStepped &&
+                if ((_playerState == PlayerState.Start || _playerState == PlayerState.Idle) &&
                     touch.phase == TouchPhase.Began)
                 {
                     ChangeState(PlayerState.PrepareToJump);
-                    
                     _animator.SetBool(PrepareJump, true);
                 }
-                else if (_isGrounded && isPrepareJump &&
+                else if (_playerState == PlayerState.PrepareToJump && 
                          (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved))
                 {
                     CalculateJumpDistance();
 
-                    _jumpTime += Time.deltaTime;
+                    _prepareJumpTime += Time.deltaTime;
                     _jumpDistance += MaxJumpDistance * Time.deltaTime;
 
-                    if (_jumpTime > 1 || _jumpDistance > MaxJumpDistance)
+                    if (_prepareJumpTime > 1 || _jumpDistance > MaxJumpDistance)
                     {
                         _jumpDistance = MaxJumpDistance;
-                        _jumpTime = 1;
+                        _prepareJumpTime = 1;
                     }
                 }
-                else if (_isGrounded && isPrepareJump &&
+                else if (_playerState == PlayerState.PrepareToJump && 
                          touch.phase == TouchPhase.Ended)
                 {
-                    ChangeState(PlayerState.Jumped);
-                
-                    _rigidbody.useGravity = false;
+                    ChangeState(PlayerState.Jumping);
+
+                    _prepareJumpTime = 0;
                     _p0 = transform.position;
-                    _isGrounded = false;
-                    _isJumping = true;
-                    _jumpTime = 0;
 
                     _animator.Rebind();
                     _animator.Play("Flip");
                 }
             }
 
-            if (_isGrounded && isIdle && !isStepped &&
+            if ((_playerState == PlayerState.Start || _playerState == PlayerState.Idle) &&
                 Input.GetKeyDown(KeyCode.Space))
             {
                 ChangeState(PlayerState.PrepareToJump);
-                
                 _animator.SetBool(PrepareJump, true);
             }
-            else if (_isGrounded && isPrepareJump &&
-                     Input.GetKey(KeyCode.Space))
+
+            if (_playerState == PlayerState.PrepareToJump && Input.GetKey(KeyCode.Space))
             {
                 CalculateJumpDistance();
 
-                _jumpTime += Time.deltaTime;
+                _prepareJumpTime += Time.deltaTime;
                 _jumpDistance += MaxJumpDistance * Time.deltaTime;
 
-                if (_jumpTime > 1 || _jumpDistance > MaxJumpDistance)
+                if (_prepareJumpTime > 1 || _jumpDistance > MaxJumpDistance)
                 {
                     _jumpDistance = MaxJumpDistance;
-                    _jumpTime = 1;
+                    _prepareJumpTime = 1;
                 }
             }
-            else if (_isGrounded && isPrepareJump &&
-                     Input.GetKeyUp(KeyCode.Space))
+
+            if (_playerState == PlayerState.PrepareToJump && Input.GetKeyUp(KeyCode.Space))
             {
-                ChangeState(PlayerState.Jumped);
-                
-                _rigidbody.useGravity = false;
+                ChangeState(PlayerState.Jumping);
+
+                _prepareJumpTime = 0;
                 _p0 = transform.position;
-                _isGrounded = false;
-                _isJumping = true;
-                _jumpTime = 0;
 
                 _animator.Rebind();
                 _animator.Play("Flip");
@@ -192,29 +180,23 @@ namespace Game.Player
             }
 
             // TODO Debug
-            var position = _downPivot.position;
-            Debug.DrawRay(position, _p1, Color.black);
-            Debug.DrawRay(position, _p2, Color.black);
+            // var position = _downPivot.position;
+            // Debug.DrawRay(position, _p1, Color.black);
+            // Debug.DrawRay(position, _p2, Color.black);
         }
 
         private void Jump()
         {
-            if (!_isJumping) return;
+            if (_playerState != PlayerState.Jumping) return;
 
-            _jumpTime += Time.deltaTime / JumpSpeed;
+            _prepareJumpTime += Time.deltaTime / JumpTime;
 
-            if (_jumpTime > 1 && !_isGrounded)
-            {
-                _rigidbody.velocity = Vector3.down * InitialFallVelocity;
-                _rigidbody.useGravity = true;
-                _isJumping = false;
-                _jumpTime = 1;
-            }
+            if (_prepareJumpTime > 1) return;
 
-            transform.position = QuadraticBezier(_p0, _p0 + _p1, _p0 + _p2, _jumpTime);
+           transform.position = QuadraticBezier(_p0, _p0 + _p1, _p0 + _p2, _prepareJumpTime);
 
             // TODO Debug
-            DrawQuadraticCurve();
+            // DrawQuadraticCurve();
         }
 
         private static Vector3 QuadraticBezier(Vector3 p0, Vector3 p1, Vector3 p2, float t)
@@ -224,25 +206,22 @@ namespace Game.Player
                    Mathf.Pow(t, 2) * p2;
         }
 
-        private void DrawQuadraticCurve()
-        {
-            for (var i = 1; i < PositionCount + 1; i++)
-            {
-                var t = i / (float) PositionCount;
-                var p0 = new Vector3(_p0.x, _p0.y - 1, _p0.z);
-
-                _positions[i - 1] = QuadraticBezier(p0, p0 + _p1, p0 + _p2, t);
-            }
-
-            _lineRenderer.SetPositions(_positions);
-        }
+        // private void DrawQuadraticCurve()
+        // {
+        //     for (var i = 1; i < PositionCount + 1; i++)
+        //     {
+        //         var t = i / (float) PositionCount;
+        //         var p0 = new Vector3(_p0.x, _p0.y - 1, _p0.z);
+        //
+        //         _positions[i - 1] = QuadraticBezier(p0, p0 + _p1, p0 + _p2, t);
+        //     }
+        //
+        //     _lineRenderer.SetPositions(_positions);
+        // }
 
         private void Idle()
         {
-            if (_playerState != PlayerState.Start &&
-                _playerState != PlayerState.Idle &&
-                _playerState != PlayerState.Jumped &&
-                _playerState != PlayerState.Dead &&
+            if (_playerState == PlayerState.Stepped &&
                 _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 ChangeState(PlayerState.Idle);
         }
@@ -251,30 +230,24 @@ namespace Game.Player
         {
             Debug.Log(other.transform.name);
 
-            if (CheckForStep(other.gameObject))
+            Debug.Log(ValidateStep(other.gameObject));
+            if (ValidateStep(other.gameObject))
             {
                 transform.parent = other.transform;
 
                 _isGrounded = true;
-                _isJumping = false;
                 _animator.SetBool(IsStepped, true);
 
                 if (_playerState != PlayerState.Start)
                 {
                     ChangeState(PlayerState.Stepped);
 
-                    _jumpTime = 0;
-                    _jumpDistance = 0;
-
-                    var steppedEffect = Instantiate(steppedEffectParticle,
-                        _downPivot.position,
-                        Quaternion.identity);
-                    steppedEffect.Play();
-
-                    _animator.SetBool(IsStepped, true);
+                    _p0 = _p1 = _p2 = Vector3.zero;
+                    _prepareJumpTime = 0;
+                    _jumpDistance = MinJumpDistance;
 
                     var platformGuid = other.gameObject.GetComponent<PlatformManager>().Guid;
-                    PlatformEventSystem.instance.SetIsPlayerStepped(platformGuid, true);
+                    PlatformEventSystem.instance.PlayerStepped(platformGuid);
                 }
             }
             else
@@ -283,68 +256,43 @@ namespace Game.Player
             }
         }
 
-        private bool CheckForStep(GameObject platform)
+        private bool ValidateStep(GameObject platform)
         {
-            var playerPosition = _downPivot.TransformPoint(Vector3.zero);
-            var platformPosition = platform.transform.position;
-            var platformMesh = platform.GetComponentInChildren<MeshRenderer>();
+            var playerPosition = transform.TransformPoint(Vector3.zero);
+            var platformCollider = platform.GetComponent<BoxCollider>();
+            var platformPosition = platform.transform.TransformPoint(Vector3.zero);
 
             switch (_spawnDirection)
             {
                 case SpawnDirection.Left:
-                    if (playerPosition.z < platformPosition.z)
-                    {
-                        var delta = platformPosition.z - (platformMesh.bounds.size / 2).z;
-                        if (playerPosition.z >= delta)
-                            return true;
-                    }
-                    else if (playerPosition.z > platformPosition.z)
-                    {
-                        var delta = platformPosition.z + (platformMesh.bounds.size / 2).z;
-                        if (playerPosition.z <= delta)
-                            return true;
-                    }
-                    else
+                    if (playerPosition.z > (platformPosition.z + platformCollider.size.z / 2))
                         return false;
-
+                    if (playerPosition.z < (platformPosition.z - platformCollider.size.z / 2))
+                        return false;
                     break;
                 case SpawnDirection.Right:
-                    if (playerPosition.x < platformPosition.x)
-                    {
-                        var delta = platformPosition.x - (platformMesh.bounds.size / 2).x;
-                        if (playerPosition.x >= delta)
-                            return true;
-                    }
-                    else if (playerPosition.x > platformPosition.x)
-                    {
-                        var delta = platformPosition.x + (platformMesh.bounds.size / 2).x;
-                        if (playerPosition.x <= delta)
-                            return true;
-                    }
-                    else
+                    if (playerPosition.x > (platformPosition.x + platformCollider.size.x / 2))
                         return false;
-
+                    if (playerPosition.x < (platformPosition.x - platformCollider.size.x / 2))
+                        return false;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            return false;
+            return true;
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            switch (other.tag)
-            {
-                case "Pit":
-                    ChangeState(PlayerState.Dead);
-                    break;
-            }
+            if (other.CompareTag("Pit") && _playerState != PlayerState.Dead)
+                ChangeState(PlayerState.Dead);
         }
 
         private void OnCollisionExit(Collision other)
         {
             transform.parent = null;
+            _isGrounded = false;
         }
 
         private void ChangeState(PlayerState state)

@@ -12,25 +12,39 @@ namespace Game
             instance = this;
         }
 
-        public event Action<SpawnDirection> OnSpawnDirectionChanged;
+        public event Action<SpawnDirection> OnDirectionChange;
 
-        public void ChangeSpawnDirection(SpawnDirection spawnDirection)
+        public void ChangeDirection(SpawnDirection spawnDirection)
         {
-            OnSpawnDirectionChanged?.Invoke(spawnDirection);
+            OnDirectionChange?.Invoke(spawnDirection);
         }
 
-        public event Action OnCreatePlatform;
+        public event Action<SpawnDirection> OnPlatformCreate;
 
-        public void CreatePlatform()
+        public void CreatePlatform(SpawnDirection spawnDirection)
         {
-            OnCreatePlatform?.Invoke();
+            OnPlatformCreate?.Invoke(spawnDirection);
         }
         
-        public event Action<int> OnIncreaseScore;
+        public event Action<SpawnDirection> OnCameraMove;
 
-        public void IncreaseScore(int points)
+        public void MoveCamera(SpawnDirection spawnDirection)
         {
-            OnIncreaseScore?.Invoke(points);
+            OnCameraMove?.Invoke(spawnDirection);
+        }
+        
+        public event Action<int> OnScoreUpdate;
+
+        public void UpdateScore(int value)
+        {
+            OnScoreUpdate?.Invoke(value);
+        }
+        
+        public event Action<int> OnCoinsUpdate;
+
+        public void UpdateCoins(int value)
+        {
+            OnCoinsUpdate?.Invoke(value);
         }
     }
 }

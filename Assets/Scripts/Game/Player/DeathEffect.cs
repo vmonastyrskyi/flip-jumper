@@ -1,5 +1,4 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace Game.Player
@@ -9,17 +8,8 @@ namespace Game.Player
         [SerializeField] private ParticleSystem lavaDeathEffectParticle;
         [SerializeField] private ParticleSystem waterDeathEffectParticle;
 
-        private PlayerState _playerState;
-
-        private void Start()
-        {
-            PlayerEventSystem.instance.OnStateChanged += state => _playerState = state;
-        }
-
         private void OnTriggerEnter(Collider other)
         {
-            if (_playerState != PlayerState.Dead) return;
-
             ParticleSystem deathEffect;
             var position = transform.position;
             switch (other.tag)
@@ -27,13 +17,13 @@ namespace Game.Player
                 case "Lava":
                     transform.DOMoveY(-4, 4);
                     deathEffect = Instantiate(lavaDeathEffectParticle,
-                        new Vector3(position.x, other.transform.position.y + .1f, position.z),
+                        new Vector3(position.x, other.transform.position.y, position.z),
                         Quaternion.identity);
                     deathEffect.Play();
                     break;
                 case "Water":
                     deathEffect = Instantiate(waterDeathEffectParticle,
-                        new Vector3(position.x, other.transform.position.y + .35f, position.z),
+                        new Vector3(position.x, other.transform.position.y + 0.01f, position.z),
                         Quaternion.Euler(90, 0, 0));
                     deathEffect.Play();
                     break;

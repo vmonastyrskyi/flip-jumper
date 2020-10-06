@@ -4,23 +4,27 @@ namespace Game.Platform
 {
     public class PlatformManager : MonoBehaviour
     {
-        private bool _isPlayerSteppedOnce;
-        
+        public bool Visited { private get; set; }
+
         public SpawnDirection Direction { get; set; }
 
         public string Guid { get; private set; }
 
-        private void Start()
+        private void Awake()
         {
             Guid = System.Guid.NewGuid().ToString();
+        }
 
-            PlatformEventSystem.instance.OnPlayerStepped += (guid, isStepped) =>
+        private void Start()
+        {
+            PlatformEventSystem.instance.OnPlayerStepped += guid =>
             {
-                if (Guid == guid && !_isPlayerSteppedOnce)
+                if (Guid == guid && !Visited)
                 {
-                    GameEventSystem.instance.CreatePlatform();
-                    GameEventSystem.instance.IncreaseScore(1);
-                    _isPlayerSteppedOnce = isStepped;
+                    PlatformEventSystem.instance.Visited();
+                    // GameEventSystem.instance.CreatePlatform();
+                    // GameEventSystem.instance.IncreaseScore(1);
+                    Visited = true;
                 }
             };
         }

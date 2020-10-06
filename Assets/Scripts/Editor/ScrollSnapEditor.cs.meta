@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 218a90facf9f52a4e941479580539772
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - saira: {fileID: 12800000, guid: aad56b6bd49460549b1f079904ec3f00, type: 3}
+  executionOrder: 0
+  icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

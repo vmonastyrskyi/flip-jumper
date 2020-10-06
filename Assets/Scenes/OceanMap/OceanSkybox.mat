@@ -52,7 +52,7 @@ Material:
     - _Angle: 0
     - _AtmosphereThickness: 0.48
     - _Blend: 0
-    - _BottomExponent: 1
+    - _BottomExponent: 10
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
@@ -75,7 +75,7 @@ Material:
     - _SunSize: 0.04
     - _SunSizeConvergence: 5
     - _Surface: 0
-    - _TopExponent: 1
+    - _TopExponent: 4
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -84,14 +84,14 @@ Material:
     - Color_BC54DA7C: {r: 0.3066038, g: 0.49125814, b: 1, a: 0}
     - Color_F87E395F: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BottomColor: {r: 0, g: 0.5254902, b: 1, a: 0}
+    - _BottomColor: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GroundColor: {r: 0.369, g: 0.349, b: 0.341, a: 1}
-    - _HorizonColor: {r: 0.20784315, g: 0.6431373, b: 1, a: 0}
+    - _HorizonColor: {r: 0.30980393, g: 0.7960785, b: 1, a: 1}
     - _SkyTint: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _TopColor: {r: 1, g: 1, b: 1, a: 0}
+    - _TopColor: {r: 0.30980393, g: 0.7960785, b: 1, a: 1}
 --- !u!114 &4636756481889108377
 MonoBehaviour:
   m_ObjectHideFlags: 11

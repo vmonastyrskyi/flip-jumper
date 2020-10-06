@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Lava
-  m_Shader: {fileID: 4800000, guid: b3dd3f7446fc8964c9be1aaa1ea6d09f, type: 3}
+  m_Shader: {fileID: 4800000, guid: ecaf4773fa6df034e853b18a84c92f01, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -19,24 +19,75 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 6f1fe35187b9fb8479f0fe82fa92aa9d, type: 3}
+        m_Scale: {x: 6, y: 6}
+        m_Offset: {x: 0, y: 0}
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: 984a1027787e8a84aa48d94f3a8aed76, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2408cc69e84fa9d4c8cf93c4f9cffda2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture2:
         m_Texture: {fileID: 2800000, guid: 984a1027787e8a84aa48d94f3a8aed76, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MainTexture3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTexture4:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Normal:
         m_Texture: {fileID: 2800000, guid: a8860e2076ef84f40b7a77b7a84de899, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _node_3441:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _node_539:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Choppiness: 0.1
+    - _Angle: 0
+    - _BottomExponent: 1
+    - _Brightness: 0.3
+    - _Choppiness: 0.05
+    - _Cutoff: 0.5
+    - _DepthMaxDistance: 12
+    - _Detail: 0.3
+    - _FadeLimit: 0.3
     - _FlowSpeed: 0.015
     - _FlowStrength: 0.01
-    - _Size: 4
+    - _Intensity: 0.49
+    - _Opacity: 0.54
+    - _Size: 6
+    - _Softness: 1
+    - _Strength: 0.5
+    - _TimeMultU: 0
+    - _TimeMultV: 0.5
+    - _TopExponent: 1
+    - _UDepth: 18
+    - _UMovement: 2
+    - _UScaler: 0.1
+    - _VDepth: 15
+    - _VMovement: 5
+    - _VScaler: 0.2
+    - _WaveAmp: 0.401
+    - _WaveOffset: 0.25
+    - _WaveSpeed: 1
     m_Colors:
-    - _DarkFoamColor: {r: 1, g: 0.5544711, b: 0, a: 1}
-    - _LightFoamColor: {r: 1, g: 0.9611176, b: 0, a: 1}
+    - _BlendColour: {r: 1, g: 1, b: 1, a: 1}
+    - _BottomColor: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Colour: {r: 1, g: 1, b: 1, a: 1}
+    - _DarkFoamColor: {r: 1, g: 0.6666667, b: 0, a: 1}
+    - _DepthColor: {r: 1, g: 0.32016644, b: 0, a: 1}
+    - _FluidColor: {r: 1, g: 0.6666667, b: 0, a: 1}
+    - _HorizonColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0}
+    - _LightFoamColor: {r: 1.4980392, g: 1.4431373, b: 0, a: 1}
+    - _TopColor: {r: 0.4339623, g: 0.2893082, b: 0, a: 1}
     - _WaterColor: {r: 1, g: 0.6347193, b: 0, a: 1}

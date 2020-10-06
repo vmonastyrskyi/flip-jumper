@@ -48,27 +48,14 @@ namespace Loader
         {
             SceneManager.LoadScene((int) scene);
             StartCoroutine(LoadMap());
-
-        //     var sceneLoading = SceneManager.LoadSceneAsync((int) scene);
-        //     sceneLoading.allowSceneActivation = false;
-        //     while (!sceneLoading.isDone)
-        //     {
-        //         if (sceneLoading.progress >= 0.9f)
-        //         {
-        //             StartCoroutine(LoadMap(sceneLoading));
-        //             sceneLoading.allowSceneActivation = true;
-        //         }
-        //
-        //         yield return null;
-        //     }
         }
 
         private IEnumerator LoadMap()
         {
             var mapLoading = SceneManager.LoadSceneAsync((int) map, LoadSceneMode.Additive);
+            mapLoading.allowSceneActivation = false;
             mapLoading.completed += operation =>
                 SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int) map));
-            mapLoading.allowSceneActivation = false;
             while (!mapLoading.isDone)
             {
                 if (mapLoading.progress >= 0.9f)

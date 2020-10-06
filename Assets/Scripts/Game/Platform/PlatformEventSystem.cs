@@ -12,11 +12,18 @@ namespace Game.Platform
             instance = this;
         }
 
-        public event Action<string, bool> OnPlayerStepped;
+        public event Action<string> OnPlayerStepped;
 
-        public void SetIsPlayerStepped(string guid, bool isStepped)
+        public void PlayerStepped(string guid)
         {
-            OnPlayerStepped?.Invoke(guid, isStepped);
+            OnPlayerStepped?.Invoke(guid);
+        }
+
+        public event Action OnVisited;
+
+        public void Visited()
+        {
+            OnVisited?.Invoke();
         }
     }
 }

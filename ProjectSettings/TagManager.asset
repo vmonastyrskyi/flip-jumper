@@ -13,6 +13,11 @@ TagManager:
   - Terrain
   - Lava
   - Water
+  - Buy Button
+  - Select Button
+  - Selected Button
+  - Glass
+  - Character Image
   layers:
   - Default
   - TransparentFX
@@ -49,4 +54,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Settings
+    uniqueID: 692874921
+    locked: 0
+  - name: Ranking
+    uniqueID: 663299547
+    locked: 0
+  - name: Store
+    uniqueID: 2057808613
+    locked: 0
+  - name: Pause
+    uniqueID: 3561529391
+    locked: 0
+  - name: Game Over
+    uniqueID: 3004282675
     locked: 0
