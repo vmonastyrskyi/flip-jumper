@@ -17,11 +17,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7eadeff4f219f434b8f2e44d9012a0b0, type: 2}
   - {fileID: 11400000, guid: 6d0addbe2c176f647b6575f63ff374d6, type: 2}
   - {fileID: 11400000, guid: e76b5c708495e0c43b91dd33e625a3ab, type: 2}
+  - {fileID: 11400000, guid: cc50baed458bdde479691e90fc38371b, type: 2}
   platforms:
   - {fileID: 11400000, guid: e619e75c6dc64194e99512e9643bc6dd, type: 2}
   maps:
   - {fileID: 11400000, guid: f45d72cc37c9e8346a343ccc4ef96450, type: 2}
   - {fileID: 11400000, guid: dee6c52db03a36d41873021fbc5d5024, type: 2}
   - {fileID: 11400000, guid: c86f5c800dc456b449fae77115ce90c6, type: 2}
-  coins: 1
+  coins: 0
   gems: 0

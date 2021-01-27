@@ -18,6 +18,8 @@ TagManager:
   - Selected Button
   - Glass
   - Character Image
+  - FxTemporaire
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Platform
   - 
   - 
   - 

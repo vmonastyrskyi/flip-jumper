@@ -1,4 +1,6 @@
-﻿using Game.Player;
+﻿using Game.Controllers;
+using Game.EventSystems;
+using Game.Player;
 using UnityEngine;
 
 public class Chasing : MonoBehaviour
@@ -6,8 +8,8 @@ public class Chasing : MonoBehaviour
     private const float MaxDistance = 6;
     private const float MinSpeed = 2;
     private const float MaxSpeed = 4;
-    private const float MinTurnSpeed = 0.003125f;
-    private const float MaxTurnSpeed = 0.00625f;
+    private const float MinTurnSpeed = 0.00625f;
+    private const float MaxTurnSpeed = 0.0125f;
     private const float MinAnimatorSpeed = 1;
     private const float MaxAnimatorSpeed = 2;
 
@@ -40,6 +42,7 @@ public class Chasing : MonoBehaviour
     private void Update()
     {
         var dirToTarget = _target.transform.position - _transform.position;
+        
         UpdateSpeed();
         LootAt(dirToTarget);
         Follow();

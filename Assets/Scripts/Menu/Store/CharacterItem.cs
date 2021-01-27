@@ -5,14 +5,14 @@ namespace Menu.Store
 {
     public class CharacterItem : MonoBehaviour
     {
-        [SerializeField] private CharacterData characterData;
+        [SerializeField] private Character character;
 
-        public CharacterData CharacterData => characterData;
-        public GameObject Character { get; private set; }
+        public Character Character => character;
+        public GameObject CharacterPrefab { get; private set; }
 
         private void Awake()
         {
-            Character = transform.GetChild(0).gameObject;
+            CharacterPrefab = transform.GetChild(0).gameObject;
         }
     }
 }

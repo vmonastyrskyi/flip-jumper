@@ -1,16 +1,17 @@
 ﻿using System;
 using DG.Tweening;
+using Game.Systems;
 using UnityEngine;
 
 namespace Game.Platform
 {
     public class Moving : MonoBehaviour
     {
-        private const float MovementTime = 2f;
+        private const float MovementTime = 2;
         
         private SpawnDirection _spawnDirection;
         private Vector3 _finalPosition;
-        private float _distance = 4f;
+        private float _distance = 4;
 
         private void Start()
         {

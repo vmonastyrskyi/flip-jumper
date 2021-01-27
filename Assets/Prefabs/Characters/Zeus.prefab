@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 8942001771788160457}
   - component: {fileID: 8640692829037413996}
   - component: {fileID: 2629682466448503275}
+  - component: {fileID: 1044481291225936074}
   - component: {fileID: -4573444398470529825}
   - component: {fileID: -5105601304798233914}
   - component: {fileID: 3776966294476442259}
@@ -207,6 +208,20 @@ MonoBehaviour:
     type: 3}
   waterDeathEffectParticle: {fileID: 198039942544698878, guid: 77c69ec12208c4c4380d15e30b6f8f68,
     type: 3}
+--- !u!114 &1044481291225936074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3723312763433540265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4505071a16234126b45d49f3cc1e0cbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  electricityEffectParticle: {fileID: 19800002, guid: 1ca16f2a31fb6a548ad8954bed1d321f,
+    type: 3}
 --- !u!65 &-4573444398470529825
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -233,7 +248,7 @@ Rigidbody:
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 3
 --- !u!120 &3776966294476442259

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Game.EventSystems;
+using Game.Systems;
+using UnityEngine;
 
 namespace Game.Platform
 {
@@ -15,15 +18,15 @@ namespace Game.Platform
             Guid = System.Guid.NewGuid().ToString();
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            yield return null;
+            
             PlatformEventSystem.instance.OnPlayerStepped += guid =>
             {
                 if (Guid == guid && !Visited)
                 {
                     PlatformEventSystem.instance.Visited();
-                    // GameEventSystem.instance.CreatePlatform();
-                    // GameEventSystem.instance.IncreaseScore(1);
                     Visited = true;
                 }
             };

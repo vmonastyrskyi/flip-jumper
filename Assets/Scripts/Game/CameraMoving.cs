@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using DG.Tweening;
+using Game.EventSystems;
+using Game.Systems;
 using UnityEngine;
 
 namespace Game
@@ -17,7 +19,7 @@ namespace Game
         {
             yield return null;
 
-            GameEventSystem.instance.OnCameraMove += CalculateNewPosition;
+            GameEventSystem.instance.OnCameraMoving += CalculateNewPosition;
         }
 
         private void CalculateNewPosition(SpawnDirection direction)

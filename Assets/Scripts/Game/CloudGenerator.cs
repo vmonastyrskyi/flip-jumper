@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Game
 {
@@ -16,19 +15,18 @@ namespace Game
         [SerializeField] private GameObject[] cloudPrefabs;
 
         private Camera _mainCamera;
+        private Transform _cameraTransform;
 
         private readonly List<GameObject> _clouds = new List<GameObject>();
-        private readonly Random _random = new Random();
 
         private void Start()
         {
-            _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-
-            var clouds = Instantiate(new GameObject("Clouds"), Vector3.zero, Quaternion.identity);
-            if (_mainCamera != null) 
-                clouds.transform.parent = _mainCamera.transform;
-
-            SpawnClouds();
+            _mainCamera = Camera.main;
+            if (_mainCamera != null)
+            {
+                _cameraTransform = _mainCamera.transform;
+                SpawnClouds();
+            }
         }
 
         private void Update()
@@ -52,7 +50,7 @@ namespace Game
                 cloud.transform.position =
                     new Vector3(position.x - (CloudSpeed * Time.deltaTime), position.y, position.z);
 
-                if ((_mainCamera.transform.position.x - cloud.transform.position.x) > DestroyCloudDistance)
+                if ((_cameraTransform.position.x - cloud.transform.position.x) > DestroyCloudDistance)
                 {
                     Destroy(cloud);
                     _clouds.Remove(cloud);
@@ -64,25 +62,26 @@ namespace Game
         private void GenerateCloud()
         {
             var lastCloud = _clouds.Last();
-            if ((_mainCamera.transform.position.x + InitialCloudDistance - lastCloud.transform.position.x) >
+            if ((_cameraTransform.position.x + InitialCloudDistance - lastCloud.transform.position.x) >
                 DistanceBetweenClouds)
                 _clouds.Add(CreateCloud(InitialCloudDistance));
         }
 
         private GameObject CreateCloud(float distance)
         {
-            var randomScale = (float) (_random.NextDouble() + 1.5f);
-            var randomCloudIndex = _random.Next(0, cloudPrefabs.Length);
+            var randomScale = Random.value + 1.5f;
+            var randomCloudIndex = Random.Range(0, cloudPrefabs.Length);
+            var cameraTransformPosition = _cameraTransform.position;
 
             var cloud = Instantiate(
                 cloudPrefabs[randomCloudIndex],
                 new Vector3(
-                    _mainCamera.transform.position.x + distance,
-                    _random.Next(-20, -10),
-                    _mainCamera.transform.position.z + _random.Next(10, 30)),
+                    cameraTransformPosition.x + distance,
+                    Random.Range(-20, -10),
+                    cameraTransformPosition.z + Random.Range(10, 30)),
                 Quaternion.identity);
 
-            cloud.transform.parent = _mainCamera.transform.GetChild(0);
+            cloud.transform.parent = _cameraTransform;
             cloud.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
             return cloud;
         }

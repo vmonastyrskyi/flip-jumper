@@ -19,11 +19,11 @@ namespace Menu.Store.EventSystems
             OnSelectedCharacterChange?.Invoke();
         }
 
-        public event Action OnSuccessfulCharacterBuy;
+        public event Action OnSuccessfulCharacterPurchase;
 
-        public void SuccessfulCharacterBuy()
+        public void SuccessfulCharacterPurchase()
         {
-            OnSuccessfulCharacterBuy?.Invoke();
+            OnSuccessfulCharacterPurchase?.Invoke();
         }
     }
 }

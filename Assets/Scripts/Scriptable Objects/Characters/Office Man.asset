@@ -18,6 +18,7 @@ MonoBehaviour:
     type: 3}
   name: Office Man
   isPurchased: 1
-  isSelected: 1
+  isSelected: 0
   currency: 1
   price: 120
+  isUpgradable: 0

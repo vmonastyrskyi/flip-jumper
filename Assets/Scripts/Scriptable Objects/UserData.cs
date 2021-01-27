@@ -5,23 +5,23 @@ namespace Scriptable_Objects
 {
     public class UserData : ScriptableObject
     {
-        [SerializeField] private CharacterData[] characters;
-        [SerializeField] private PlatformData[] platforms;
-        [SerializeField] private MapData[] maps;
+        [SerializeField] private Character[] characters;
+        [SerializeField] private Platform[] platforms;
+        [SerializeField] private Map[] maps;
         [SerializeField] private int coins;
         [SerializeField] private int gems;
 
-        public CharacterData[] Characters => characters;
+        public Character[] Characters => characters;
 
-        public CharacterData SelectedCharacter => characters.First(character => character.IsSelected);
+        public Character SelectedCharacter => characters.First(character => character.IsSelected);
 
-        public PlatformData[] Platforms => platforms;
+        public Platform[] Platforms => platforms;
 
-        public PlatformData SelectedPlatform => platforms.First(platform => platform.IsSelected);
+        public Platform SelectedPlatform => platforms.First(platform => platform.IsSelected);
 
-        public MapData[] Maps => maps;
+        public Map[] Maps => maps;
 
-        public MapData SelectedMap => maps.First(map => map.IsSelected);
+        public Map SelectedMap => maps.First(map => map.IsSelected);
 
         public int Coins
         {

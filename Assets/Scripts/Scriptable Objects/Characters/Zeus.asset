@@ -21,3 +21,4 @@ MonoBehaviour:
   isSelected: 0
   currency: 0
   price: 3000
+  isUpgradable: 1

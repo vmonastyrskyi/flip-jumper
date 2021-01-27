@@ -1,4 +1,7 @@
-﻿using Game.Player;
+﻿using Game.Controllers;
+using Game.EventSystems;
+using Game.Player;
+using Game.Player.Effects;
 using Menu.Store.EventSystems;
 using Scriptable_Objects;
 using UnityEngine;
