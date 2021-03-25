@@ -8,7 +8,7 @@ namespace Game
     {
         private const int InitialCloudCount = 8;
         private const int DistanceBetweenClouds = 25;
-        private const float CloudSpeed = 1.5f;
+        private const float CloudSpeed = 2;
         private const float InitialCloudDistance = 180;
         private const int DestroyCloudDistance = 40;
 
@@ -31,9 +31,8 @@ namespace Game
 
         private void Update()
         {
+            GenerateClouds();
             MoveClouds();
-
-            GenerateCloud();
         }
 
         private void SpawnClouds()
@@ -48,7 +47,7 @@ namespace Game
             {
                 var position = cloud.transform.position;
                 cloud.transform.position =
-                    new Vector3(position.x - (CloudSpeed * Time.deltaTime), position.y, position.z);
+                    new Vector3(position.x - (CloudSpeed * Time.unscaledDeltaTime), position.y, position.z);
 
                 if ((_cameraTransform.position.x - cloud.transform.position.x) > DestroyCloudDistance)
                 {
@@ -59,7 +58,7 @@ namespace Game
             }
         }
 
-        private void GenerateCloud()
+        private void GenerateClouds()
         {
             var lastCloud = _clouds.Last();
             if ((_cameraTransform.position.x + InitialCloudDistance - lastCloud.transform.position.x) >

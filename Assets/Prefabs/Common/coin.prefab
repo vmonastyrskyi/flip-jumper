@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3076807479697248833}
-  - component: {fileID: 5318333857896725877}
-  - component: {fileID: 638916611829235400}
+  - component: {fileID: 5346563317552718650}
+  - component: {fileID: 7854626369440304893}
   m_Layer: 0
-  m_Name: coin
+  m_Name: Coin
   m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,14 +27,14 @@ Transform:
   m_GameObject: {fileID: 2447940273463806203}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 1006207944803030427}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5318333857896725877
-SphereCollider:
+--- !u!65 &5346563317552718650
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -44,9 +44,9 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
+  m_Size: {x: 10, y: 10, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &638916611829235400
+--- !u!95 &7854626369440304893
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 2bbb8787ab92f1e418394439ea08768b, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -76,8 +76,9 @@ GameObject:
   - component: {fileID: 1006207944803030427}
   - component: {fileID: 1587049666429895398}
   - component: {fileID: 264509079851512525}
+  - component: {fileID: 29184460282919274}
   m_Layer: 0
-  m_Name: mesh
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,7 +105,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3502348572043137269}
-  m_Mesh: {fileID: 2159703810824169821, guid: 1e6dd2160ff8a1b4d85ae104501e80de, type: 3}
+  m_Mesh: {fileID: -5216581434543980006, guid: 1e6dd2160ff8a1b4d85ae104501e80de, type: 3}
 --- !u!23 &264509079851512525
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -114,7 +115,7 @@ MeshRenderer:
   m_GameObject: {fileID: 3502348572043137269}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
@@ -144,3 +145,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &29184460282919274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3502348572043137269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054e571c99eeacd4dad3d345911d6d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationDirection: 0
+  rotationSpeed: 300
+  unscaledTime: 1

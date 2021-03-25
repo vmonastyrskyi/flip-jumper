@@ -5,21 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Platform
-  - Floor
-  - Pit
   - UI
-  - ScoreUIElement
-  - HintUIElement
   - Terrain
   - Lava
   - Water
-  - Buy Button
-  - Select Button
-  - Selected Button
-  - Glass
-  - Character Image
-  - FxTemporaire
   - Coin
+  - Systems
+  - Directional Light
+  - Button
   layers:
   - Default
   - TransparentFX

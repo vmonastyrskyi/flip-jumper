@@ -1,29 +1,37 @@
 ﻿using System;
+using Scriptable_Objects;
 using UnityEngine;
 
 namespace Menu.Store.EventSystems
 {
     public class PlatformsPageEventSystem : MonoBehaviour
     {
-        public static PlatformsPageEventSystem instance;
+        public static PlatformsPageEventSystem Instance;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
 
-        public event Action OnSelectedPlatformChange;
+        public event Action<Platform> OnPlatformSelected;
 
-        public void ChangeSelectedPlatform()
+        public void SelectPlatform(Platform platform)
         {
-            OnSelectedPlatformChange?.Invoke();
+            OnPlatformSelected?.Invoke(platform);
         }
 
-        public event Action OnSuccessfulPlatformPurchase;
+        public event Action<Platform> OnPlatformPurchased;
 
-        public void SuccessfulPlatformPurchase()
+        public void PurchasePlatform(Platform platform)
         {
-            OnSuccessfulPlatformPurchase?.Invoke();
+            OnPlatformPurchased?.Invoke(platform);
+        }
+        
+        public event Action<Platform> OnPlatformActivated;
+
+        public void ActivatePlatform(Platform platform)
+        {
+            OnPlatformActivated?.Invoke(platform);
         }
     }
 }

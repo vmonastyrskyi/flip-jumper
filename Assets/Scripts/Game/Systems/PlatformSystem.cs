@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Game.Controllers;
 using Game.EventSystems;
-using Game.Platform;
+using Loader;
+using Scriptable_Objects;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,9 +14,14 @@ namespace Game.Systems
 {
     public class PlatformSystem : MonoBehaviour
     {
-        [SerializeField] private GameObject coinPrefab;
-
         private readonly List<GameObject> _platforms = new List<GameObject>();
+
+        private GameData _gameData;
+
+        private void Awake()
+        {
+            _gameData = DataManager.Instance.GameData;
+        }
 
         private IEnumerator Start()
         {
@@ -22,22 +29,22 @@ namespace Game.Systems
 
             yield return null;
 
-            GameEventSystem.instance.OnGeneratingPlatform += GeneratePlatform;
-            GameEventSystem.instance.OnCoinGenerated += GenerateCoin;
+            GameEventSystem.Instance.OnPlatformGenerate += GeneratePlatformGenerate;
         }
 
         private void SpawnPlatforms()
         {
-            var platform = CreatePlatform(SpawnDirection.Right);
-            platform.GetComponent<PlatformManager>().Visited = true;
+            var platform = CreatePlatform(JumpDirection.Right, false);
+            var platformController = platform.GetComponent<PlatformController>();
+            platformController.Visited = true;
             _platforms.Add(platform);
 
-            _platforms.Add(CreatePlatform(SpawnDirection.Right));
+            _platforms.Add(CreatePlatform(JumpDirection.Right, false));
         }
 
-        private void GeneratePlatform(SpawnDirection direction)
+        private void GeneratePlatformGenerate(JumpDirection direction, bool isMoving)
         {
-            _platforms.Add(CreatePlatform(direction));
+            _platforms.Add(CreatePlatform(direction, isMoving));
 
             if (_platforms.Count > 4)
             {
@@ -48,37 +55,43 @@ namespace Game.Systems
             }
         }
 
-        private GameObject CreatePlatform(SpawnDirection direction)
+        private GameObject CreatePlatform(JumpDirection direction, bool isMoving)
         {
             Vector3 position;
             Vector3 platformSize;
+
             if (_platforms.Count == 0)
             {
-                position = new Vector3(0, 0.25f, 0);
+                position = Vector3.zero;
                 platformSize = Vector3.zero;
             }
             else
             {
                 var lastPlatform = _platforms.Last();
-                position = lastPlatform.transform.position;
+                position = lastPlatform.GetComponent<PlatformController>().InitialPosition;
                 platformSize = Vector3.Scale(lastPlatform.transform.localScale,
                     lastPlatform.GetComponent<BoxCollider>().bounds.size);
             }
 
             GameObject platform;
-            var platformDistance = Random.Range(platformSize.x, platformSize.x * 2) + platformSize.x / 1.5f;
+            var a = (platformSize.x + platformSize.z) / 2;
+            var platformDistance = Random.Range(a, a * 2) + a / 1.5f;
+            var platformsData = _gameData.Platforms;
+            var activePlatformsData = platformsData.Where(p => p.IsActive).ToArray();
+            var platformData = activePlatformsData[Random.Range(0, activePlatformsData.Length)];
+
             switch (direction)
             {
-                case SpawnDirection.Left:
+                case JumpDirection.Left:
                     platform = Instantiate(
-                        DataManager.instance.UserData.SelectedPlatform.Prefab,
+                        platformData.Prefab,
                         new Vector3(position.x, position.y, position.z + platformDistance),
                         Quaternion.identity
                     );
                     break;
-                case SpawnDirection.Right:
+                case JumpDirection.Right:
                     platform = Instantiate(
-                        DataManager.instance.UserData.SelectedPlatform.Prefab,
+                        platformData.Prefab,
                         new Vector3(position.x + platformDistance, position.y, position.z),
                         Quaternion.identity
                     );
@@ -87,27 +100,21 @@ namespace Game.Systems
                     throw new ArgumentOutOfRangeException();
             }
 
-            platform.GetComponent<PlatformManager>().Direction = direction;
+            var platformController = platform.GetComponent<PlatformController>();
+            platformController.Direction = direction;
+            platformController.IsMoving = isMoving;
 
             return platform;
         }
 
-        private void GenerateCoin()
+        public GameObject LastPlatform()
         {
-            var lastPlatform = _platforms[_platforms.Count - 1];
-            var preLastPlatform = _platforms[_platforms.Count - 2];
+            return _platforms[_platforms.Count - 1];
+        }
 
-            var lastPlatformPosition = lastPlatform.transform.position;
-            var preLastPlatformPosition = preLastPlatform.transform.position;
-            
-            Debug.Log(lastPlatform, preLastPlatform);
-            Instantiate(
-                coinPrefab,
-                new Vector3(preLastPlatformPosition.x + (lastPlatformPosition.x - preLastPlatformPosition.x) / 2, 
-                    5, 
-                    preLastPlatformPosition.z + (lastPlatformPosition.z - preLastPlatformPosition.z) / 2),
-                Quaternion.identity
-            );
+        public GameObject PreLastPlatform()
+        {
+            return _platforms[_platforms.Count - 2];
         }
     }
 }

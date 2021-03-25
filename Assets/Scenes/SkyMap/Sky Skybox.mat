@@ -86,17 +86,17 @@ Material:
     - Color_BC54DA7C: {r: 0.2352941, g: 0.7038706, b: 1, a: 0}
     - Color_F87E395F: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BottomColor: {r: 0, g: 0.33333334, b: 1, a: 1}
+    - _BottomColor: {r: 0, g: 0.39215687, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color1: {r: 0, g: 0.760746, b: 1, a: 0}
     - _Color2: {r: 0, g: 0.7607844, b: 1, a: 0}
     - _Color3: {r: 0, g: 0.30475497, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GroundColor: {r: 0.369, g: 0.349, b: 0.341, a: 1}
-    - _HorizonColor: {r: 0, g: 0.74509805, b: 1, a: 1}
+    - _HorizonColor: {r: 0, g: 0.78431374, b: 1, a: 1}
     - _SkyTint: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _TopColor: {r: 0, g: 0.74509805, b: 1, a: 1}
+    - _TopColor: {r: 0, g: 0.7843138, b: 1, a: 1}
 --- !u!114 &4636756481889108377
 MonoBehaviour:
   m_ObjectHideFlags: 11

@@ -19,23 +19,23 @@ namespace Game
         {
             yield return null;
 
-            GameEventSystem.instance.OnCameraMoving += CalculateNewPosition;
+            GameEventSystem.Instance.OnCameraMove += CalculateNewPosition;
         }
 
-        private void CalculateNewPosition(SpawnDirection direction)
+        private void CalculateNewPosition(JumpDirection direction)
         {
             var targetPosition = Target.position;
             Vector3 newPosition;
             
             switch (direction)
             {
-                case SpawnDirection.Left:
+                case JumpDirection.Left:
                     newPosition = new Vector3(
                         targetPosition.x + offset.x / .75f,
                         offset.y,
                         targetPosition.z + offset.z / 1.5f);
                     break;
-                case SpawnDirection.Right:
+                case JumpDirection.Right:
                     newPosition = new Vector3(
                         targetPosition.x + offset.x,
                         offset.y,

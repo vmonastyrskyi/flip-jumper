@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Util;
+using UnityEngine.Localization;
 
 namespace Scriptable_Objects
 {
@@ -8,21 +8,23 @@ namespace Scriptable_Objects
     {
         [SerializeField] private int id;
         [SerializeField] private GameObject prefab;
-        [SerializeField] private GameObject uiPrefab;
-        [SerializeField] private string name;
+        [SerializeField] private GameObject ui3DPrefab;
+        [SerializeField] private GameObject uiItemPrefab;
+        [SerializeField] private LocalizedString name;
         [SerializeField] private bool isPurchased;
         [SerializeField] private bool isSelected;
-        [SerializeField] private PriceCurrency currency;
+        [SerializeField] private bool isEffectEnabled;
         [SerializeField] private int price;
-        [SerializeField] private bool isUpgradable;
 
         public int Id => id;
 
         public GameObject Prefab => prefab;
 
-        public GameObject UiPrefab => uiPrefab;
+        public GameObject Ui3DPrefab => ui3DPrefab;
 
-        public string Name => name;
+        public GameObject UiItemPrefab => uiItemPrefab;
+
+        public LocalizedString Name => name;
 
         public bool IsPurchased
         {
@@ -36,10 +38,12 @@ namespace Scriptable_Objects
             set => isSelected = value;
         }
 
-        public PriceCurrency Currency => currency;
+        public bool IsEffectEnabled
+        {
+            get => isEffectEnabled;
+            set => isEffectEnabled = value;
+        }
 
         public int Price => price;
-
-        public bool IsUpgradable => isUpgradable;
     }
 }

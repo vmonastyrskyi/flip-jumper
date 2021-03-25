@@ -1,26 +1,29 @@
 ﻿using System.Collections;
-using Loader;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Util;
+using SceneManager = Loader.SceneManager;
 
 namespace Menu
 {
     public class MapSelection : MonoBehaviour
     {
         private Camera _mainCamera;
-        private SceneSystem _sceneSystem;
-        private Map _previousMap;
-        private Map _selectedMap;
+        private SceneManager _sceneManager;
+        private Environment _previousEnvironment;
+        private Environment _selectedEnvironment;
 
         private void Start()
         {
             _mainCamera = Camera.main;
         }
 
-        private IEnumerator LoadMap(Map map)
+        private IEnumerator LoadMap(Environment environment)
         {
-            var load = SceneManager.LoadSceneAsync((int) map, LoadSceneMode.Additive);
-            load.completed += operation => SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int) map));
+            var load = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync((int) environment, LoadSceneMode.Additive);
+            load.completed += operation =>
+                UnityEngine.SceneManagement.SceneManager.SetActiveScene(
+                    UnityEngine.SceneManagement.SceneManager.GetSceneByBuildIndex((int) environment));
             load.allowSceneActivation = false;
             while (!load.isDone)
             {
@@ -35,7 +38,7 @@ namespace Menu
                 yield return null;
             }
 
-            SceneManager.UnloadSceneAsync((int) _previousMap);
+            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync((int) _previousEnvironment);
         }
     }
 }

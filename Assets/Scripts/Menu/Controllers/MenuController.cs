@@ -1,4 +1,6 @@
-﻿using Loader;
+﻿using System.Collections;
+using Ads;
+using Loader;
 using Menu.Store.EventSystems;
 using Scriptable_Objects;
 using TMPro;
@@ -9,22 +11,22 @@ namespace Menu.Controllers
 {
     public class MenuController : MonoBehaviour
     {
+        [SerializeField] private Animator sceneTransitionAnimator;
+        [SerializeField] private GameObject platformWithPlayer;
         [SerializeField] private GameObject menuPanel;
-        [SerializeField] private GameObject storePanel;
-        [SerializeField] private GameObject rankingPanel;
         [SerializeField] private GameObject settingsPanel;
-        
+        [SerializeField] private GameObject rankingPanel;
+        [SerializeField] private GameObject storePanel;
+        [SerializeField] private GameObject coinsPanel;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button storeButton;
         [SerializeField] private Button rankingButton;
         [SerializeField] private Button playButton;
-        
-        [SerializeField] private GameObject coinsPanel;
-        [SerializeField] private GameObject gemsPanel;
 
-        private UserData _userData;
+        private GameData _gameData;
         private TextMeshProUGUI _coinsLabel;
-        private TextMeshProUGUI _gemsLabel;
+        
+        private static readonly int FadeIn = Animator.StringToHash("Fade_In");
 
         private void Awake()
         {
@@ -37,48 +39,57 @@ namespace Menu.Controllers
             if (rankingButton != null)
                 rankingButton.onClick.AddListener(OpenRanking);
             if (playButton != null)
-                playButton.onClick.AddListener(Play);
+                playButton.onClick.AddListener(() => StartCoroutine(Play()));
 
             _coinsLabel = coinsPanel.GetComponentInChildren<TextMeshProUGUI>();
-            _gemsLabel = gemsPanel.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         private void OpenSettings()
         {
+            platformWithPlayer.SetActive(false);
             menuPanel.SetActive(false);
             settingsPanel.SetActive(true);
         }
 
         private void OpenStore()
         {
+            platformWithPlayer.SetActive(false);
             menuPanel.SetActive(false);
             storePanel.SetActive(true);
         }
 
         private void OpenRanking()
         {
+            platformWithPlayer.SetActive(false);
             menuPanel.SetActive(false);
             rankingPanel.SetActive(true);
         }
 
-        private void Play()
+        private IEnumerator Play()
         {
-            SceneSystem.instance.LoadGame();
+            sceneTransitionAnimator.SetTrigger(FadeIn);
+
+            yield return new WaitForSeconds(0.25f);
+
+            SceneManager.Instance.LoadGame();
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
-            _userData = DataManager.instance.UserData;
+            _gameData = DataManager.Instance.GameData;
 
-            SetCashInformation();
+            yield return null;
 
-            CharactersPageEventSystem.instance.OnSuccessfulCharacterPurchase += SetCashInformation;
+            UpdateCoinsLabel();
+
+            StoreEventSystem.Instance.OnSuccessfulPurchase += UpdateCoinsLabel;
+
+            AdsManager.ShowBanner();
         }
 
-        private void SetCashInformation()
+        private void UpdateCoinsLabel()
         {
-            _coinsLabel.SetText(_userData.Coins.ToString());
-            _gemsLabel.SetText(_userData.Gems.ToString());
+            _coinsLabel.SetText(_gameData.Coins.ToString());
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Ads;
 using Game.EventSystems;
 using TMPro;
 using UnityEngine;
@@ -8,19 +9,17 @@ namespace Game.Controllers
 {
     public class GameController : MonoBehaviour
     {
-        private const float GameOverDelay = 2;
+        private const float GameOverDelay = 3;
+        private const float TimeToHideHint = 0.5f;
 
-        [SerializeField] private TextMeshProUGUI coinsLabel;
-        [SerializeField] private TextMeshProUGUI scoreLabel;
-        [SerializeField] private TextMeshProUGUI hintLabel;
-        
-        [SerializeField] private Button pauseButton;
-        
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private GameObject gameOverPanel;
+        [SerializeField] private Button pauseButton;
+        [SerializeField] private TextMeshProUGUI coinsLabel;
+        [SerializeField] private TextMeshProUGUI scoreLabel;
+        [SerializeField] private TextMeshProUGUI hintLabel;
 
-        private Animator _scoreAnimator;
         private Animator _hintAnimator;
 
         private void Awake()
@@ -28,7 +27,6 @@ namespace Game.Controllers
             if (pauseButton != null)
                 pauseButton.onClick.AddListener(PauseGame);
 
-            _scoreAnimator = scoreLabel.GetComponent<Animator>();
             _hintAnimator = hintLabel.GetComponent<Animator>();
         }
 
@@ -36,18 +34,17 @@ namespace Game.Controllers
         {
             yield return null;
 
-            GameEventSystem.instance.OnScoreUpdated += UpdateScore;
-            GameEventSystem.instance.OnCoinsUpdated += UpdateCoins;
-            GameEventSystem.instance.OnGameStarted += () => StartCoroutine(HideHint());
-            GameEventSystem.instance.OnGameOver += () => StartCoroutine(ShowGameOverPanel());
+            GameEventSystem.Instance.OnScoreUpdated += UpdateScore;
+            GameEventSystem.Instance.OnCoinsUpdated += UpdateCoins;
+            GameEventSystem.Instance.OnGameStarted += () => StartCoroutine(HideHint());
+            GameEventSystem.Instance.OnGameOver += () => StartCoroutine(ShowGameOverPanel());
+
+            AdsManager.ShowBanner();
         }
 
         private void UpdateScore(int value)
         {
             scoreLabel.text = value.ToString();
-
-            if (value % 5 == 0)
-                _scoreAnimator.Play("Increased");
         }
 
         private void UpdateCoins(int value)
@@ -59,14 +56,13 @@ namespace Game.Controllers
         {
             _hintAnimator.Play("Hide");
 
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(TimeToHideHint);
 
             hintLabel.gameObject.SetActive(false);
         }
 
         private IEnumerator ShowGameOverPanel()
         {
-            Debug.Log("Game Over");
             yield return new WaitForSeconds(GameOverDelay);
 
             gamePanel.SetActive(false);
@@ -75,9 +71,10 @@ namespace Game.Controllers
 
         private void PauseGame()
         {
+            Time.timeScale = 0;
             gamePanel.SetActive(false);
             pausePanel.SetActive(true);
-            Time.timeScale = 0;
+            GameEventSystem.Instance.PauseGame();
         }
     }
 }

@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Loader.unity
     guid: 8f95018712d424f4d96cb703cbdce07e
   - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: f7addf0867a97234fa58eaf63cf03d76
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
+    guid: 58d63e2868556dc48a68a598bf3d591c
+  - enabled: 1
     path: Assets/Scenes/SkyMap/SkyMap.unity
     guid: 9d47c65eef413b94ea807253f40c2797
   - enabled: 1
@@ -17,10 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OceanMap/OceanMap.unity
     guid: 8e4b398b614cd084cbcad517b3decb96
-  - enabled: 1
-    path: Assets/Scenes/Menu.unity
-    guid: f7addf0867a97234fa58eaf63cf03d76
-  - enabled: 1
-    path: Assets/Scenes/Game.unity
-    guid: 58d63e2868556dc48a68a598bf3d591c
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 427df338febda30459d3426b39e3db66,
+      type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 02f66abb40dc7da4387116fe93ab580c,
+      type: 2}

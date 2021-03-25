@@ -1,18 +1,39 @@
-﻿using Scriptable_Objects;
+﻿using Menu.Store.EventSystems;
+using Scriptable_Objects;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Menu.Store
 {
     public class PlatformItem : MonoBehaviour
     {
         [SerializeField] private Platform platform;
-
-        public Platform Platform => platform;
-        public GameObject PlatformPrefab { get; private set; }
+        [SerializeField] private GameObject lockIcon;
+        [SerializeField] private GameObject selectedIcon;
 
         private void Awake()
         {
-            PlatformPrefab = transform.GetChild(0).gameObject;
+            lockIcon.SetActive(!platform.IsPurchased);
+            selectedIcon.SetActive(platform.IsActive);
+                
+            GetComponent<Button>().onClick.AddListener(SelectItem);
+
+            PlatformsPageEventSystem.Instance.OnPlatformPurchased += purchasedPlatform =>
+            {
+                if (platform == purchasedPlatform)
+                    lockIcon.SetActive(false);
+            };
+
+            PlatformsPageEventSystem.Instance.OnPlatformActivated += activatedPlatform =>
+            {
+                if (platform == activatedPlatform)
+                    selectedIcon.SetActive(platform.IsActive);
+            };
+        }
+
+        private void SelectItem()
+        {
+            PlatformsPageEventSystem.Instance.SelectPlatform(platform);
         }
     }
 }

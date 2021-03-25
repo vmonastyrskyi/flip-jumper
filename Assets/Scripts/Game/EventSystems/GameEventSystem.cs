@@ -6,32 +6,32 @@ namespace Game.EventSystems
 {
     public class GameEventSystem : MonoBehaviour
     {
-        public static GameEventSystem instance;
+        public static GameEventSystem Instance;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
 
-        public event Action<SpawnDirection> OnDirectionChanged;
+        public event Action<JumpDirection> OnDirectionChanged;
 
-        public void ChangeDirection(SpawnDirection spawnDirection)
+        public void ChangeDirection(JumpDirection jumpDirection)
         {
-            OnDirectionChanged?.Invoke(spawnDirection);
+            OnDirectionChanged?.Invoke(jumpDirection);
         }
 
-        public event Action<SpawnDirection> OnGeneratingPlatform;
+        public event Action<JumpDirection, bool> OnPlatformGenerate;
 
-        public void GeneratePlatform(SpawnDirection spawnDirection)
+        public void GeneratePlatform(JumpDirection jumpDirection, bool isMoving)
         {
-            OnGeneratingPlatform?.Invoke(spawnDirection);
+            OnPlatformGenerate?.Invoke(jumpDirection, isMoving);
         }
 
-        public event Action<SpawnDirection> OnCameraMoving;
+        public event Action<JumpDirection> OnCameraMove;
 
-        public void MoveCamera(SpawnDirection spawnDirection)
+        public void MoveCamera(JumpDirection jumpDirection)
         {
-            OnCameraMoving?.Invoke(spawnDirection);
+            OnCameraMove?.Invoke(jumpDirection);
         }
 
         public event Action<int> OnScoreUpdated;
@@ -48,20 +48,48 @@ namespace Game.EventSystems
             OnCoinsUpdated?.Invoke(value);
         }
         
-        public event Action OnCoinGenerated;
+        public event Action<JumpDirection> OnCoinGenerated;
 
-        public void GenerateCoin()
+        public void GenerateCoin(JumpDirection jumpDirection)
         {
-            OnCoinGenerated?.Invoke();
+            OnCoinGenerated?.Invoke(jumpDirection);
+        }
+
+        public event Action OnCoinPickuped;
+
+        public void PickupCoin()
+        {
+            OnCoinPickuped?.Invoke();
         }
         
+        public event Action OnRewardedForVideo;
+
+        public void RewardForVideo()
+        {
+            OnRewardedForVideo?.Invoke();
+        }
+
         public event Action OnGameStarted;
 
         public void StartGame()
         {
             OnGameStarted?.Invoke();
         }
-        
+
+        public event Action OnGamePaused;
+
+        public void PauseGame()
+        {
+            OnGamePaused?.Invoke();
+        }
+
+        public event Action OnGameResumed;
+
+        public void ResumeGame()
+        {
+            OnGameResumed?.Invoke();
+        }
+
         public event Action OnGameOver;
 
         public void GameOver()

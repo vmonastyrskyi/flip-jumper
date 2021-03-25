@@ -1,29 +1,37 @@
 ﻿using System;
+using Scriptable_Objects;
 using UnityEngine;
 
 namespace Menu.Store.EventSystems
 {
     public class CharactersPageEventSystem : MonoBehaviour
     {
-        public static CharactersPageEventSystem instance;
+        public static CharactersPageEventSystem Instance;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
 
-        public event Action OnSelectedCharacterChange;
+        public event Action<Character> OnCharacterSelected;
 
-        public void ChangeSelectedCharacter()
+        public void SelectCharacter(Character character)
         {
-            OnSelectedCharacterChange?.Invoke();
+            OnCharacterSelected?.Invoke(character);
         }
 
-        public event Action OnSuccessfulCharacterPurchase;
+        public event Action<Character> OnCharacterPurchased;
 
-        public void SuccessfulCharacterPurchase()
+        public void PurchaseCharacter(Character character)
         {
-            OnSuccessfulCharacterPurchase?.Invoke();
+            OnCharacterPurchased?.Invoke(character);
+        }
+
+        public event Action<Character> OnSelectedCharacterChanged;
+
+        public void ChangeSelectedCharacter(Character character)
+        {
+            OnSelectedCharacterChanged?.Invoke(character);
         }
     }
 }

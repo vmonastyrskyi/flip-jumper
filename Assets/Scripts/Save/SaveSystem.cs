@@ -6,12 +6,64 @@ namespace Save
 {
     public static class SaveSystem
     {
-        private static readonly string Path = Application.persistentDataPath + "/data.fun";
+        private static readonly string Path = Application.persistentDataPath + "/data.dat";
         private static readonly BinaryFormatter Formatter;
 
         static SaveSystem()
         {
             Formatter = new BinaryFormatter();
+        }
+
+        public static void Initialize()
+        {
+            if (!File.Exists(Path))
+            {
+                FileStream stream = null;
+                try
+                {
+                    stream = new FileStream(Path, FileMode.Create);
+
+                    var settings = new SettingsData(
+                        0.5f,
+                        0.5f,
+                        true,
+                        true
+                    );
+
+                    var characters = new[]
+                    {
+                        new CharacterData(1000, true, true, true),
+                        new CharacterData(1001, false, false, true),
+                        new CharacterData(1002, false, false, true),
+                        new CharacterData(1003, false, false, true),
+                        new CharacterData(1004, false, false, true)
+                    };
+
+                    var platforms = new[]
+                    {
+                        new PlatformData(2000, true, true),
+                        new PlatformData(2001, false, false),
+                        new PlatformData(2002, false, false),
+                        new PlatformData(2003, false, false),
+                        new PlatformData(2004, false, false),
+                    };
+
+                    var data = new ApplicationData(
+                        settings,
+                        characters,
+                        platforms,
+                        null,
+                        0,
+                        0
+                    );
+
+                    Formatter.Serialize(stream, data);
+                }
+                finally
+                {
+                    stream?.Close();
+                }
+            }
         }
 
         public static void Save(ApplicationData applicationData)
@@ -21,7 +73,6 @@ namespace Save
             {
                 stream = new FileStream(Path, FileMode.Create);
                 var data = new ApplicationData(applicationData);
-
                 Formatter.Serialize(stream, data);
             }
             finally
@@ -38,12 +89,7 @@ namespace Save
                 try
                 {
                     stream = new FileStream(Path, FileMode.Open);
-                    var data = Formatter.Deserialize(stream) as ApplicationData;
-                    Debug.Log(data.SelectedMap);
-                    Debug.Log(data.SelectedCharacter);
-                    Debug.Log(data.Coins);
-                    Debug.Log(data.Score);
-                    return data;
+                    return Formatter.Deserialize(stream) as ApplicationData;
                 }
                 finally
                 {
@@ -51,7 +97,6 @@ namespace Save
                 }
             }
 
-            Debug.Log("No Data");
             return null;
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Game.Controllers;
 using Game.EventSystems;
 using UnityEngine;
 
@@ -7,24 +6,25 @@ namespace Game.Player.Effects
 {
     public class GroundPoofEffect : Effect
     {
-        [SerializeField] private ParticleSystem groundPoofEffectParticle;
+        [SerializeField] private GameObject groundPoofEffectPrefab;
 
         private IEnumerator Start()
         {
             yield return null;
-
-            PlayerEventSystem.instance.OnStateChanged += PlayEffect;
+            
+            if (PlatformEventSystem.Instance != null)
+                PlatformEventSystem.Instance.OnPlayerStepped += PlayEffect;
         }
 
-        private void PlayEffect(PlayerState state)
+        private void PlayEffect(string guid, bool centered)
         {
-            if (state == PlayerState.Stepped)
+            if (!centered)
             {
                 var position = transform.position;
-                var magicPoofEffect = Instantiate(groundPoofEffectParticle,
-                    new Vector3(position.x, position.y - .75f, position.z),
-                    Quaternion.Euler(90, 0, 0));
-                magicPoofEffect.Play();
+                var magicPoofEffect = Instantiate(groundPoofEffectPrefab,
+                    new Vector3(position.x, position.y - .95f, position.z),
+                    Quaternion.Euler(-90, 0, 0));
+                magicPoofEffect.GetComponent<ParticleSystem>().Play();
             }
         }
     }

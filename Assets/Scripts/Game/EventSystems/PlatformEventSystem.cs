@@ -5,25 +5,25 @@ namespace Game.EventSystems
 {
     public class PlatformEventSystem : MonoBehaviour
     {
-        public static PlatformEventSystem instance;
+        public static PlatformEventSystem Instance;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
 
-        public event Action<string> OnPlayerStepped;
+        public event Action<string, bool> OnPlayerStepped;
 
-        public void PlayerStepped(string guid)
+        public void PlayerStepped(string guid, bool centered)
         {
-            OnPlayerStepped?.Invoke(guid);
+            OnPlayerStepped?.Invoke(guid, centered);
         }
 
-        public event Action OnVisited;
+        public event Action<bool> OnVisited;
 
-        public void Visited()
+        public void Visited(bool centered)
         {
-            OnVisited?.Invoke();
+            OnVisited?.Invoke(centered);
         }
     }
 }

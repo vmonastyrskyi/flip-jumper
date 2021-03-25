@@ -6,11 +6,11 @@ namespace Game.EventSystems
 {
     public class PlayerEventSystem : MonoBehaviour
     {
-        public static PlayerEventSystem instance;
+        public static PlayerEventSystem Instance;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
         
         public event Action<PlayerState> OnStateChanged;

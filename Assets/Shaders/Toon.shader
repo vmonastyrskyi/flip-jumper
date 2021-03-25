@@ -13,6 +13,7 @@
         CGPROGRAM
     
         #pragma surface surf Ramp nofog noforwardadd nolightmap nodynlightmap
+        #pragma target 3.0
     
         half _Intensity;
         sampler2D _Ramp;

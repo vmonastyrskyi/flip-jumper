@@ -1,54 +1,78 @@
 ﻿using System;
-using Loader;
 
 namespace Save
 {
     [Serializable]
     public class ApplicationData
     {
-        private Map _selectedMap;
-        private int _selectedCharacter;
-        private int _score;
+        private SettingsData _settingsData;
+        private CharacterData[] _characters;
+        private PlatformData[] _platforms;
+        private EnvironmentData[] _environments;
+        private int _highScore;
         private int _coins;
 
-        public ApplicationData(ApplicationData applicationData)
+        public SettingsData Settings
         {
-            _selectedMap = applicationData._selectedMap;
-            _selectedCharacter = applicationData._selectedCharacter;
-            _score = applicationData._score;
-            _coins = applicationData._coins;
+            get => _settingsData;
+            set => _settingsData = value;
         }
 
-        public ApplicationData(Map selectedMap, int selectedCharacter, int score, int coins)
+        public CharacterData[] Characters
         {
-            _selectedMap = selectedMap;
-            _selectedCharacter = selectedCharacter;
-            _score = score;
-            _coins = coins;
+            get => _characters;
+            set => _characters = value;
         }
 
-        public Map SelectedMap
+        public PlatformData[] Platforms
         {
-            get => _selectedMap;
-            set => _selectedMap = value;
+            get => _platforms;
+            set => _platforms = value;
         }
 
-        public int SelectedCharacter
+        public EnvironmentData[] Environments
         {
-            get => _selectedCharacter;
-            set => _selectedCharacter = value;
+            get => _environments;
+            set => _environments = value;
         }
 
-        public int Score
+        public int HighScore
         {
-            get => _score;
-            set => _score = value;
+            get => _highScore;
+            set => _highScore = value;
         }
 
         public int Coins
         {
             get => _coins;
             set => _coins = value;
+        }
+
+        public ApplicationData(ApplicationData applicationData)
+        {
+            _settingsData = applicationData._settingsData;
+            _characters = applicationData._characters;
+            _platforms = applicationData._platforms;
+            _environments = applicationData._environments;
+            _highScore = applicationData._highScore;
+            _coins = applicationData._coins;
+        }
+
+        public ApplicationData(
+            SettingsData settingsData,
+            CharacterData[] characters,
+            PlatformData[] platforms,
+            EnvironmentData[] environments,
+            int highScore,
+            int coins
+        )
+        {
+            _settingsData = settingsData;
+            _characters = characters;
+            _platforms = platforms;
+            _environments = environments;
+            _highScore = highScore;
+            _coins = coins;
         }
     }
 }
