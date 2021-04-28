@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b160bd6f46cb740a39ac60440720fc, type: 3}
+  m_Name: Mage
+  m_EditorClassIdentifier: 
+  id: Mage
+  prefab: {fileID: 3316245640860884914, guid: 9faaeaafdee7c834da3c3599edcde6ed, type: 3}
+  ui3DPrefab: {fileID: 4768370077140817161, guid: 075ab339f9709ed4b8b0e59d576fc5e9,
+    type: 3}
+  uiItemPrefab: {fileID: 830425805508580011, guid: 828769a06a9d5b94ebdc3875eb2571cd,
+    type: 3}
+  name:
+    m_TableReference:
+      m_TableCollectionName: GUID:4188b88742435874c8931c693ebbf6d5
+    m_TableEntryReference:
+      m_KeyId: 238445379584
+      m_Key: 
+    m_FallbackState: 0
+  isDefault: 0
+  isPurchased: 0
+  isSelected: 0
+  isEffectEnabled: 1
+  price: 250

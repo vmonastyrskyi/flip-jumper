@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Settings_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: d68f1276093e0ea4e822256cb7d1298e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 39232716800
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 334385889280
+    m_Localized: Audio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363196563456
+    m_Localized: Graphics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380296740864
+    m_Localized: Antialiasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 428233441280
+    m_Localized: Shadows
+    m_Metadata:
+      m_Items: []
+  - m_Id: 345336681054208
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2163441673682944
+    m_Localized: Sign In to get leaderboard access
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2163690974724096
+    m_Localized: Synchronize with local data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7231309046071296
+    m_Localized: Synchronize with cloud data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7231649107656704
+    m_Localized: No internet connection
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
