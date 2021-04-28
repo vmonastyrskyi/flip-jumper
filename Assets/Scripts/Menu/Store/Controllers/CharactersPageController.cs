@@ -1,15 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using DG.Tweening;
 using Game.Player.Effects;
 using Loader;
+using LocalSave;
+using Menu.Settings;
 using Menu.Store.EventSystems;
-using Save;
+using PlayGames;
+using PlayGames.Dao;
 using Scriptable_Objects;
 using TMPro;
-using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.UI;
+using Util;
+using Button = UnityEngine.UI.Button;
 
 namespace Menu.Store.Controllers
 {
@@ -17,38 +22,46 @@ namespace Menu.Store.Controllers
     {
         private const int CharactersPerRow = 3;
 
-        [SerializeField] private GameObject platform;
-        [SerializeField] private GameObject emptyItem;
+        [SerializeField] private GameObject platformWithPlayer;
+
+        [Header("Character Information")]
         [SerializeField] private GameObject selectedItem;
-        [SerializeField] private GridLayoutGroup charactersItems;
         [SerializeField] private TextMeshProUGUI characterName;
+        [SerializeField] private TextMeshProUGUI priceLabel;
+
+        [Header("Messages")]
         [SerializeField] private TextMeshProUGUI selectMessage;
         [SerializeField] private TextMeshProUGUI failureMessage;
+
+        [Header("Characters List")]
+        [SerializeField] private GridLayoutGroup charactersItems;
+        [SerializeField] private GameObject emptyItem;
+
+        [Header("Buttons")]
         [SerializeField] private Toggle effectToggle;
         [SerializeField] private Button buyButton;
         [SerializeField] private Button selectButton;
-        [SerializeField] private Sprite coinIcon;
 
         private GameData _gameData;
         private Character _currentCharacter;
-        private SVGImage _currencyIcon;
-        private TextMeshProUGUI _price;
-
-        private void Awake()
-        {
-            _currencyIcon = buyButton.transform.GetChild(1).GetChild(0).GetComponent<SVGImage>();
-            _price = buyButton.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
-        }
 
         private IEnumerator Start()
         {
             _gameData = DataManager.Instance.GameData;
 
             yield return null;
-
+            
             AttachCharacters();
 
             CharactersPageEventSystem.Instance.OnCharacterSelected += SetSelectedCharacter;
+
+            SettingsEventSystem.Instance.OnGameDataUpdated += () =>
+            {
+                foreach (Transform child in charactersItems.transform)
+                    Destroy(child.gameObject); 
+                
+                AttachCharacters();
+            };
         }
 
         private void AttachCharacters()
@@ -65,8 +78,8 @@ namespace Menu.Store.Controllers
         {
             _currentCharacter = null;
 
-            characterName.SetText("");
-            failureMessage.SetText("");
+            characterName.SetText(string.Empty);
+            failureMessage.SetText(string.Empty);
 
             selectMessage.gameObject.SetActive(true);
             failureMessage.gameObject.SetActive(false);
@@ -107,8 +120,7 @@ namespace Menu.Store.Controllers
 
             if (!character.IsPurchased)
             {
-                _price.SetText(character.Price.ToString());
-                _currencyIcon.sprite = coinIcon;
+                priceLabel.SetText(character.Price.ToString());
 
                 buyButton.onClick.AddListener(ValidatePurchase);
             }
@@ -127,15 +139,18 @@ namespace Menu.Store.Controllers
 
             if (totalCoins >= characterPrice)
             {
-                var data = SaveSystem.Load();
+                var localData = LocalSaveSystem.LoadLocalData();
 
-                data.Coins -= characterPrice;
+                localData.SaveTime = DateTime.Now.Ticks;
+                localData.Coins -= characterPrice;
                 _gameData.Coins -= characterPrice;
 
-                data.Characters.First(c => c.Id == _currentCharacter.Id).IsPurchased = true;
+                localData.Characters.First(c => c.Id == _currentCharacter.Id).IsPurchased = true;
                 _currentCharacter.IsPurchased = true;
 
-                SaveSystem.Save(data);
+                if (PlayGamesServices.IsAuthenticated && InternetConnection.Available())
+                    PlayGamesServices.SaveCloudData(CloudData.FromLocalData(localData));
+                LocalSaveSystem.SaveLocalData(localData);
 
                 effectToggle.onValueChanged.RemoveAllListeners();
                 buyButton.onClick.RemoveAllListeners();
@@ -163,21 +178,21 @@ namespace Menu.Store.Controllers
 
                 var failureMessageTransform = failureMessage.GetComponent<RectTransform>();
                 failureMessageTransform.DOKill(true);
-                failureMessageTransform.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.125f, 0, 0), 0.5f, 2);
+                failureMessageTransform.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.125f, 0, 0), 0.25f, 2);
             }
         }
 
         private void ToggleCharacterEffect(bool value)
         {
-            var data = SaveSystem.Load();
+            var localData = LocalSaveSystem.LoadLocalData();
 
-            data.Characters.First(c => c.Id == _currentCharacter.Id).IsEffectEnabled = value;
+            localData.Characters.First(c => c.Id == _currentCharacter.Id).IsEffectEnabled = value;
             _currentCharacter.IsEffectEnabled = value;
 
-            SaveSystem.Save(data);
+            LocalSaveSystem.SaveLocalData(localData);
 
             _currentCharacter.Prefab.GetComponent<Effect>().enabled = value;
-            platform.transform.GetChild(0).GetComponent<Effect>().enabled = value;
+            platformWithPlayer.transform.GetChild(0).GetComponent<Effect>().enabled = value;
         }
 
         private void SelectCharacter()
@@ -188,14 +203,14 @@ namespace Menu.Store.Controllers
             failureMessage.gameObject.SetActive(false);
             selectButton.gameObject.SetActive(false);
 
-            var data = SaveSystem.Load();
+            var localData = LocalSaveSystem.LoadLocalData();
 
-            data.Characters.First(c => c.Id == _gameData.SelectedCharacter.Id).IsSelected = false;
+            localData.Characters.First(c => c.Id == _gameData.SelectedCharacter.Id).IsSelected = false;
             _gameData.SelectedCharacter.IsSelected = false;
-            data.Characters.First(c => c.Id == _currentCharacter.Id).IsSelected = true;
+            localData.Characters.First(c => c.Id == _currentCharacter.Id).IsSelected = true;
             _currentCharacter.IsSelected = true;
 
-            SaveSystem.Save(data);
+            LocalSaveSystem.SaveLocalData(localData);
 
             effectToggle.onValueChanged.AddListener(ToggleCharacterEffect);
 

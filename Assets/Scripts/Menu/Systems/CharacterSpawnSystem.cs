@@ -2,6 +2,7 @@
 using Game.EventSystems;
 using Game.Player.Effects;
 using Loader;
+using Menu.Settings;
 using Menu.Store.EventSystems;
 using Scriptable_Objects;
 using UnityEngine;
@@ -22,6 +23,8 @@ namespace Menu.Systems
             SpawnCharacter(_gameData.SelectedCharacter);
 
             CharactersPageEventSystem.Instance.OnSelectedCharacterChanged += SpawnCharacter;
+            
+            SettingsEventSystem.Instance.OnGameDataUpdated += () => SpawnCharacter(_gameData.SelectedCharacter);
         }
 
         private void SpawnCharacter(Character character)
@@ -35,7 +38,7 @@ namespace Menu.Systems
             menuCharacter.transform.parent = platformWithPlayer.transform;
             menuCharacter.transform.rotation = platformWithPlayer.transform.rotation;
             menuCharacter.transform.localScale = new Vector3(1.35f, 1.35f, 1.35f);
-            
+
             menuCharacter.GetComponent<Effect>().enabled = character.IsEffectEnabled;
 
             Destroy(menuCharacter.GetComponent<PlayerEventSystem>());

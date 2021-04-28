@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b160bd6f46cb740a39ac60440720fc, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: 
-  id: 1004
+  id: Mage
   prefab: {fileID: 3316245640860884914, guid: 9faaeaafdee7c834da3c3599edcde6ed, type: 3}
   ui3DPrefab: {fileID: 4768370077140817161, guid: 075ab339f9709ed4b8b0e59d576fc5e9,
     type: 3}
@@ -25,7 +25,8 @@ MonoBehaviour:
       m_KeyId: 238445379584
       m_Key: 
     m_FallbackState: 0
+  isDefault: 0
   isPurchased: 0
   isSelected: 0
   isEffectEnabled: 1
-  price: 4
+  price: 250

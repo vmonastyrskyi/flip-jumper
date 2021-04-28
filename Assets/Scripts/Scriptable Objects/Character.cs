@@ -6,17 +6,18 @@ namespace Scriptable_Objects
     [CreateAssetMenu(menuName = "Character Data", order = 52)]
     public class Character : ScriptableObject
     {
-        [SerializeField] private int id;
+        [SerializeField] private string id;
         [SerializeField] private GameObject prefab;
         [SerializeField] private GameObject ui3DPrefab;
         [SerializeField] private GameObject uiItemPrefab;
         [SerializeField] private LocalizedString name;
+        [SerializeField] private bool isDefault;
         [SerializeField] private bool isPurchased;
         [SerializeField] private bool isSelected;
         [SerializeField] private bool isEffectEnabled;
         [SerializeField] private int price;
 
-        public int Id => id;
+        public string Id => id;
 
         public GameObject Prefab => prefab;
 
@@ -25,6 +26,8 @@ namespace Scriptable_Objects
         public GameObject UiItemPrefab => uiItemPrefab;
 
         public LocalizedString Name => name;
+
+        public bool IsDefault => isDefault;
 
         public bool IsPurchased
         {

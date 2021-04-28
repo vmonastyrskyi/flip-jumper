@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b160bd6f46cb740a39ac60440720fc, type: 3}
   m_Name: Santa
   m_EditorClassIdentifier: 
-  id: 1002
+  id: Santa
   prefab: {fileID: 1821526486562580867, guid: 342d0a5b28b9122459ff4e44cdbf7ca3, type: 3}
   ui3DPrefab: {fileID: 9216233877124194612, guid: efe338195da627049b9ff44f8f1b05f8,
     type: 3}
@@ -25,7 +25,8 @@ MonoBehaviour:
       m_KeyId: 127703171072
       m_Key: 
     m_FallbackState: 0
+  isDefault: 0
   isPurchased: 0
   isSelected: 0
   isEffectEnabled: 1
-  price: 2
+  price: 250

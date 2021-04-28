@@ -6,7 +6,7 @@ namespace Scriptable_Objects
     [CreateAssetMenu(menuName = "Platform Data", order = 53)]
     public class Platform : ScriptableObject
     {
-        [SerializeField] private int id;
+        [SerializeField] private string id;
         [SerializeField] private GameObject prefab;
         [SerializeField] private GameObject ui3DPrefab;
         [SerializeField] private GameObject uiItemPrefab;
@@ -16,7 +16,7 @@ namespace Scriptable_Objects
         [SerializeField] private bool isActive;
         [SerializeField] private int price;
 
-        public int Id => id;
+        public string Id => id;
 
         public GameObject Prefab => prefab;
 

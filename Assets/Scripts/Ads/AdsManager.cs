@@ -31,7 +31,7 @@ namespace Ads
         {
             yield return null;
 
-            Appodeal.setTesting(true);
+            Appodeal.setTesting(false);
             Appodeal.muteVideosIfCallsMuted(true);
             Appodeal.initialize(AppKey, Appodeal.NON_SKIPPABLE_VIDEO | Appodeal.BANNER);
         }
@@ -39,9 +39,7 @@ namespace Ads
         public static void ShowNonSkippableVideo(Placement placement)
         {
             if (Appodeal.isLoaded(Appodeal.NON_SKIPPABLE_VIDEO))
-            {
                 Appodeal.show(Appodeal.NON_SKIPPABLE_VIDEO);
-            }
 
             switch (placement)
             {
@@ -59,9 +57,7 @@ namespace Ads
         public static void ShowBanner()
         {
             if (Appodeal.isLoaded(Appodeal.BANNER))
-            {
                 Appodeal.show(Appodeal.BANNER_BOTTOM);
-            }
         }
     }
 }

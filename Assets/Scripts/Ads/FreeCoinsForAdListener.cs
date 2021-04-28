@@ -24,8 +24,7 @@ namespace Ads
 
         public void onNonSkippableVideoFinished()
         {
-            PurchasesPageEventSystem.Instance.RewardForVideo();
-            Appodeal.setNonSkippableVideoCallbacks(null);
+            CurrencyPageEventSystem.Instance.RewardForVideo();
         }
 
         public void onNonSkippableVideoClosed(bool finished)

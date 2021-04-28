@@ -6,7 +6,7 @@ namespace Game.Player.Effects
 {
     public class MagicPoofEffect : Effect
     {
-        [SerializeField] private GameObject magicPoofEffectPrefab;
+        [SerializeField] private GameObject magicPoofEffectPrefab = null;
 
         private IEnumerator Start()
         {

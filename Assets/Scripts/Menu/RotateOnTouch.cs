@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using Util;
 
 namespace Menu
@@ -51,16 +50,6 @@ namespace Menu
             {
                 _rotate.enabled = true;
             }
-
-            // if (Input.GetMouseButton(0))
-            // {
-            //     _currentPosition = Input.mousePosition;
-            //     _deltaPosition = _currentPosition - _lastPosition;
-            //     _lastPosition = _currentPosition;
-            //
-            //     var rotationY = Quaternion.Euler(0, -_deltaPosition.x * RotationSpeed, 0);
-            //     transform.rotation *= rotationY;
-            // }
         }
     }
 }

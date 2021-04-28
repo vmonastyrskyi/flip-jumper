@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10daf8ed30344016bde4ea366a3c7295, type: 3}
   m_Name: Ground
   m_EditorClassIdentifier: 
-  id: 2000
+  id: Ground
   prefab: {fileID: 6697024419780828768, guid: b2bce93724f8b27418b7fb6b6a540a98, type: 3}
   ui3DPrefab: {fileID: 3559456397953959912, guid: 5b7dbef462b8bb84c864400d76c391fa,
     type: 3}

@@ -27,11 +27,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 137329098752
-    m_Localized: Purchases
+    m_Localized: Currency
     m_Metadata:
       m_Items: []
   - m_Id: 121415909376
-    m_Localized: Environment
+    m_Localized: Environments
     m_Metadata:
       m_Items: []
   - m_Id: 100117233664

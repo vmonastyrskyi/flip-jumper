@@ -29,13 +29,11 @@ namespace Menu
             {
                 RemoveAds
             };
-
-            InitializePurchasing();
         }
 
-        public static bool CheckPurchasedState(string id)
+        private void Start()
         {
-            return _storeController.products.WithID(id).hasReceipt;
+            InitializePurchasing();
         }
 
         private void InitializePurchasing()
@@ -45,14 +43,10 @@ namespace Menu
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
             foreach (var product in _consumableProducts)
-            {
                 builder.AddProduct(product, ProductType.Consumable);
-            }
 
             foreach (var product in _nonConsumableProducts)
-            {
                 builder.AddProduct(product, ProductType.NonConsumable);
-            }
 
             UnityPurchasing.Initialize(this, builder);
         }

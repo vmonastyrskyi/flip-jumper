@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10daf8ed30344016bde4ea366a3c7295, type: 3}
   m_Name: Box
   m_EditorClassIdentifier: 
-  id: 2001
+  id: Box
   prefab: {fileID: 3680431171827014250, guid: 337d8648f5c07ff46bceb2fdc9a09f79, type: 3}
   ui3DPrefab: {fileID: 7389482509523092160, guid: 3ffa75b0759a7cf40bed325cd952e437,
     type: 3}
@@ -28,4 +28,4 @@ MonoBehaviour:
   isDefault: 0
   isPurchased: 0
   isActive: 0
-  price: 2
+  price: 200

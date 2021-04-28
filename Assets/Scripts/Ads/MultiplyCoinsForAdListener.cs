@@ -1,5 +1,4 @@
-﻿using AppodealAds.Unity.Api;
-using AppodealAds.Unity.Common;
+﻿using AppodealAds.Unity.Common;
 using Game.EventSystems;
 
 namespace Ads
@@ -25,7 +24,6 @@ namespace Ads
         public void onNonSkippableVideoFinished()
         {
             GameEventSystem.Instance.RewardForVideo();
-            Appodeal.setNonSkippableVideoCallbacks(null);
         }
 
         public void onNonSkippableVideoClosed(bool finished)

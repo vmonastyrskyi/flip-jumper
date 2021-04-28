@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10daf8ed30344016bde4ea366a3c7295, type: 3}
   m_Name: Cookie
   m_EditorClassIdentifier: 
-  id: 2003
+  id: Cookie
   prefab: {fileID: 6338780328953828927, guid: ff082529dcc59c643a67fd517bd4fb45, type: 3}
   ui3DPrefab: {fileID: 1837682587486169686, guid: e79e2cc633353b04582a33e7e9bc2102,
     type: 3}
@@ -28,4 +28,4 @@ MonoBehaviour:
   isDefault: 0
   isPurchased: 0
   isActive: 0
-  price: 1
+  price: 200

@@ -6,7 +6,7 @@ namespace Game.Player.Effects
 {
     public class GroundPoofEffect : Effect
     {
-        [SerializeField] private GameObject groundPoofEffectPrefab;
+        [SerializeField] private GameObject groundPoofEffectPrefab = null;
 
         private IEnumerator Start()
         {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b160bd6f46cb740a39ac60440720fc, type: 3}
   m_Name: Builder
   m_EditorClassIdentifier: 
-  id: 1001
+  id: Builder
   prefab: {fileID: 5920037156345473875, guid: 470e06de16ef8584b873ae3892325e9e, type: 3}
   ui3DPrefab: {fileID: 403064886121503137, guid: 0dc298f51d829d74292e30193b93a8d6,
     type: 3}
@@ -25,7 +25,8 @@ MonoBehaviour:
       m_KeyId: 174180253696
       m_Key: 
     m_FallbackState: 0
+  isDefault: 0
   isPurchased: 0
   isSelected: 0
   isEffectEnabled: 1
-  price: 1
+  price: 250

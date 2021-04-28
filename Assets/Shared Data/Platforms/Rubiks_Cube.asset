@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10daf8ed30344016bde4ea366a3c7295, type: 3}
   m_Name: Rubiks_Cube
   m_EditorClassIdentifier: 
-  id: 2004
+  id: Rubiks Cube
   prefab: {fileID: 5009668387501507214, guid: 72316853bbbf65143b56ca43d990f81c, type: 3}
   ui3DPrefab: {fileID: 5457228840736261986, guid: 7110c59c58b803043a71804eb7dddab8,
     type: 3}
@@ -28,4 +28,4 @@ MonoBehaviour:
   isDefault: 0
   isPurchased: 0
   isActive: 0
-  price: 5
+  price: 200

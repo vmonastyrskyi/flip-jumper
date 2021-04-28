@@ -36,7 +36,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 345336681054208
-    m_Key: Language Label
+    m_Key: Language_Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2163441673682944
+    m_Key: Tip_Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2163690974724096
+    m_Key: Sync_Local_Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7231309046071296
+    m_Key: Sync_Cloud_Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7231649107656704
+    m_Key: No_Internet_Label
     m_Metadata:
       m_Items: []
   m_Metadata:

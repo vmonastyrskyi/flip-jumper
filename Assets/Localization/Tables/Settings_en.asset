@@ -42,5 +42,21 @@ MonoBehaviour:
     m_Localized: Language
     m_Metadata:
       m_Items: []
+  - m_Id: 2163441673682944
+    m_Localized: Sign In to get leaderboard access
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2163690974724096
+    m_Localized: Synchronize with local data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7231309046071296
+    m_Localized: Synchronize with cloud data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7231649107656704
+    m_Localized: No internet connection
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

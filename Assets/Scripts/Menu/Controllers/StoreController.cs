@@ -1,31 +1,39 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Loader;
+using LocalSave;
+using Menu.Settings;
 using Menu.Store.EventSystems;
-using Save;
+using PlayGames;
+using PlayGames.Dao;
 using Scriptable_Objects;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using Util;
+using Button = UnityEngine.UI.Button;
 
 namespace Menu.Controllers
 {
     public class StoreController : MonoBehaviour
     {
         [SerializeField] private GameObject platformWithPlayer;
-        [SerializeField] private GameObject menuPanel;
-        [SerializeField] private GameObject storePanel;
-        [SerializeField] private GameObject coinsPanel;
+
+        [Header("Buttons")]
         [SerializeField] private Button closeButton;
 
+        [Header("Panels")]
+        [SerializeField] private GameObject menuPanel;
+        [SerializeField] private GameObject storePanel;
+
+        [Header("Coins Panel")]
+        [SerializeField] private TextMeshProUGUI coinsLabel;
+
         private GameData _gameData;
-        private TextMeshProUGUI _coinsLabel;
 
         private void Awake()
         {
             if (closeButton != null)
                 closeButton.onClick.AddListener(CloseStore);
-
-            _coinsLabel = coinsPanel.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         private IEnumerator Start()
@@ -38,7 +46,9 @@ namespace Menu.Controllers
 
             StoreEventSystem.Instance.OnSuccessfulPurchase += UpdateCoinsLabel;
 
-            PurchasesPageEventSystem.Instance.OnRewardedForVideo += () => { IncreaseCoins(10); };
+            SettingsEventSystem.Instance.OnGameDataUpdated += UpdateCoinsLabel;
+            
+            CurrencyPageEventSystem.Instance.OnRewardedForVideo += () => { IncreaseCoins(10); };
 
             InAppPurchasesEventSystem.Instance.OnPurchasedConsumable += args =>
             {
@@ -62,19 +72,22 @@ namespace Menu.Controllers
 
         private void IncreaseCoins(int coins)
         {
-            var data = SaveSystem.Load();
+            var localData = LocalSaveSystem.LoadLocalData();
 
-            data.Coins += coins;
+            localData.SaveTime = DateTime.Now.Ticks;
+            localData.Coins += coins;
             _gameData.Coins += coins;
 
-            SaveSystem.Save(data);
+            if (PlayGamesServices.IsAuthenticated && InternetConnection.Available())
+                PlayGamesServices.SaveCloudData(CloudData.FromLocalData(localData));
+            LocalSaveSystem.SaveLocalData(localData);
 
             StoreEventSystem.Instance.SuccessfulPurchase();
         }
 
         private void UpdateCoinsLabel()
         {
-            _coinsLabel.SetText(_gameData.Coins.ToString());
+            coinsLabel.SetText(_gameData.Coins.ToString());
         }
 
         private void CloseStore()

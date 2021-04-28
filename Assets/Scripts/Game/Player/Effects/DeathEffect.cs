@@ -4,8 +4,8 @@ namespace Game.Player.Effects
 {
     public class DeathEffect : MonoBehaviour
     {
-        [SerializeField] private GameObject lavaDeathEffectPrefab;
-        [SerializeField] private GameObject waterDeathEffectPrefab;
+        [SerializeField] private GameObject lavaDeathEffectPrefab = null;
+        [SerializeField] private GameObject waterDeathEffectPrefab = null;
 
         private void OnTriggerEnter(Collider other)
         {

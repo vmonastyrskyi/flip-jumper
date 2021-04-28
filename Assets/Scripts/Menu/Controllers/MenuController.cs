@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using Ads;
 using Loader;
+using Menu.Settings;
 using Menu.Store.EventSystems;
+using PlayGames;
 using Scriptable_Objects;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using Util;
+using Button = UnityEngine.UI.Button;
 
 namespace Menu.Controllers
 {
@@ -13,19 +16,24 @@ namespace Menu.Controllers
     {
         [SerializeField] private Animator sceneTransitionAnimator;
         [SerializeField] private GameObject platformWithPlayer;
+
+        [Header("Panels")]
         [SerializeField] private GameObject menuPanel;
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private GameObject rankingPanel;
         [SerializeField] private GameObject storePanel;
-        [SerializeField] private GameObject coinsPanel;
+
+        [Header("Coins Panel")]
+        [SerializeField] private TextMeshProUGUI coinsLabel;
+
+        [Header("Buttons")]
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button storeButton;
         [SerializeField] private Button rankingButton;
         [SerializeField] private Button playButton;
 
         private GameData _gameData;
-        private TextMeshProUGUI _coinsLabel;
-        
+
         private static readonly int FadeIn = Animator.StringToHash("Fade_In");
 
         private void Awake()
@@ -41,9 +49,15 @@ namespace Menu.Controllers
             if (playButton != null)
                 playButton.onClick.AddListener(() => StartCoroutine(Play()));
 
-            _coinsLabel = coinsPanel.GetComponentInChildren<TextMeshProUGUI>();
-        }
+            ToggleRankingButton(PlayGamesServices.IsAuthenticated && InternetConnection.Available());
 
+            PlayGamesServicesEventSystem.Instance.OnUserAuthenticated += ToggleRankingButton;
+
+            SettingsEventSystem.Instance.OnGameDataUpdated += UpdateCoinsLabel;
+
+            StoreEventSystem.Instance.OnSuccessfulPurchase += UpdateCoinsLabel;
+        }
+        
         private void OpenSettings()
         {
             platformWithPlayer.SetActive(false);
@@ -82,14 +96,17 @@ namespace Menu.Controllers
 
             UpdateCoinsLabel();
 
-            StoreEventSystem.Instance.OnSuccessfulPurchase += UpdateCoinsLabel;
-
             AdsManager.ShowBanner();
         }
 
         private void UpdateCoinsLabel()
         {
-            _coinsLabel.SetText(_gameData.Coins.ToString());
+            coinsLabel.SetText(_gameData.Coins.ToString());
+        }
+
+        private void ToggleRankingButton(bool active)
+        {
+            rankingButton.interactable = active;
         }
     }
 }

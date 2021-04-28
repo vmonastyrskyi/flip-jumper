@@ -5,7 +5,7 @@ namespace Game.Player.Effects
 {
     public class SnowEffect : Effect
     {
-        [SerializeField] private GameObject snowEffectPrefab;
+        [SerializeField] private GameObject snowEffectPrefab = null;
 
         private GameObject _snowEffect;
         

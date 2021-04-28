@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b160bd6f46cb740a39ac60440720fc, type: 3}
   m_Name: Zeus
   m_EditorClassIdentifier: 
-  id: 1003
+  id: Zeus
   prefab: {fileID: 3723312763433540265, guid: 32ae30ec631e4f84a9795f99cb38c1ef, type: 3}
   ui3DPrefab: {fileID: 4102376782892967224, guid: ec783e0a30111c9438c694eeca0f9030,
     type: 3}
@@ -25,7 +25,8 @@ MonoBehaviour:
       m_KeyId: 301657735168
       m_Key: 
     m_FallbackState: 0
+  isDefault: 0
   isPurchased: 0
   isSelected: 0
   isEffectEnabled: 1
-  price: 3
+  price: 250

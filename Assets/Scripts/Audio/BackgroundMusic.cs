@@ -5,6 +5,7 @@ namespace Audio
     public class BackgroundMusic : MonoBehaviour
     {
         private static BackgroundMusic _instance;
+        
         private void Awake()
         {
             if (_instance == null)

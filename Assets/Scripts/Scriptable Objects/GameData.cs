@@ -12,7 +12,10 @@ namespace Scriptable_Objects
 
         public Character[] Characters => characters;
 
-        public Character SelectedCharacter => characters.First(character => character.IsSelected);
+        public Character DefaultCharacter => characters.First(character => character.IsDefault);
+
+        public Character SelectedCharacter =>
+            characters.First(character => character.IsPurchased && character.IsSelected);
 
         public Platform[] Platforms => platforms;
 
@@ -23,7 +26,7 @@ namespace Scriptable_Objects
             get => highScore;
             set => highScore = value;
         }
-        
+
         public int Coins
         {
             get => coins;

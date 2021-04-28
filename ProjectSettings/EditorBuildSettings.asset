@@ -17,10 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SkyMap/SkyMap.unity
     guid: 9d47c65eef413b94ea807253f40c2797
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/VulcanMap/VulcanMap.unity
     guid: 062fe54976188b3418354ceed69c6dae
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OceanMap/OceanMap.unity
     guid: 8e4b398b614cd084cbcad517b3decb96
   m_configObjects:

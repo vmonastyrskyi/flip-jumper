@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b160bd6f46cb740a39ac60440720fc, type: 3}
   m_Name: Office_Man
   m_EditorClassIdentifier: 
-  id: 1000
+  id: Office Man
   prefab: {fileID: 4099250216843105240, guid: 654148a7e107ee2488c80cbc161d4089, type: 3}
   ui3DPrefab: {fileID: 2843648268737436967, guid: 88415e50573649f4285610309b8db0cb,
     type: 3}
@@ -25,7 +25,8 @@ MonoBehaviour:
       m_KeyId: 5657313280
       m_Key: 
     m_FallbackState: 0
+  isDefault: 1
   isPurchased: 1
-  isSelected: 1
+  isSelected: 0
   isEffectEnabled: 1
   price: 0

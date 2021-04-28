@@ -6,7 +6,7 @@ namespace Game.Player.Effects
 {
     public class SmokePoofEffect : Effect
     {
-        [SerializeField] private GameObject smokePoofEffectPrefab;
+        [SerializeField] private GameObject smokePoofEffectPrefab = null;
 
         private IEnumerator Start()
         {

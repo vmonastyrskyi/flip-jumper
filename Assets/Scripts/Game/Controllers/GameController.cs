@@ -3,7 +3,7 @@ using Ads;
 using Game.EventSystems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 namespace Game.Controllers
 {
@@ -12,10 +12,15 @@ namespace Game.Controllers
         private const float GameOverDelay = 3;
         private const float TimeToHideHint = 0.5f;
 
+        [Header("Panels")]
         [SerializeField] private GameObject gamePanel;
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private GameObject gameOverPanel;
+
+        [Header("Buttons")]
         [SerializeField] private Button pauseButton;
+
+        [Header("Labels")]
         [SerializeField] private TextMeshProUGUI coinsLabel;
         [SerializeField] private TextMeshProUGUI scoreLabel;
         [SerializeField] private TextMeshProUGUI hintLabel;

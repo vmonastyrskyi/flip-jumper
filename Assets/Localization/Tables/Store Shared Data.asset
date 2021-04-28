@@ -28,11 +28,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 121415909376
-    m_Key: Maps_Tab_Label
+    m_Key: Environments_Tab_Label
     m_Metadata:
       m_Items: []
   - m_Id: 137329098752
-    m_Key: Purchases_Tab_Label
+    m_Key: Currency_Tab_Label
     m_Metadata:
       m_Items: []
   - m_Id: 162838855680

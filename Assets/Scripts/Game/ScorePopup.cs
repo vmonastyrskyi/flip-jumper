@@ -10,9 +10,7 @@ namespace Game
         private void Start()
         {
             if (Camera.main != null)
-            {
                 _mainCamera = Camera.main;
-            }
         }
 
         private void Update()

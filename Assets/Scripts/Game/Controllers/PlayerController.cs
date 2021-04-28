@@ -43,7 +43,7 @@ namespace Game.Controllers
         private bool _isSteppedCenter;
         private bool _isGamePaused;
         private int _prepareJumpPower;
-        
+
         private static readonly int Step = Animator.StringToHash("Step");
         private static readonly int PrepareToJump = Animator.StringToHash("Prepare_To_Jump");
 
@@ -84,7 +84,7 @@ namespace Game.Controllers
 
                 _animator.Rebind();
                 _animator.Play("Flip");
-                
+
                 if (!_isStarted)
                 {
                     _isStarted = true;
@@ -93,8 +93,11 @@ namespace Game.Controllers
             }
             else if (_playerState == PlayerState.Dead)
             {
-                _animator.Rebind();
-                _animator.Play("Flip");
+                if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Flip"))
+                {
+                    _animator.Rebind();
+                    _animator.Play("Flip");
+                }
             }
         }
 
@@ -522,7 +525,7 @@ namespace Game.Controllers
 
                     if (_jumpTime > 1)
                         _jumpTime = 1;
-                    
+
                     transform.position = QuadraticBezier(_p0, _p1, _p2, _jumpTime);
                 }
             }
@@ -570,7 +573,7 @@ namespace Game.Controllers
                     else
                     {
                         ChangeState(PlayerState.Stepped);
-                        
+
                         _animator.Play(Step);
                     }
                 }

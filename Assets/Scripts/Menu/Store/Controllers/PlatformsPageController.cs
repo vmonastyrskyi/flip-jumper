@@ -1,14 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using DG.Tweening;
 using Loader;
+using LocalSave;
+using Menu.Settings;
 using Menu.Store.EventSystems;
-using Save;
+using PlayGames;
+using PlayGames.Dao;
 using Scriptable_Objects;
 using TMPro;
-using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.UI;
+using Util;
+using Button = UnityEngine.UI.Button;
 
 namespace Menu.Store.Controllers
 {
@@ -16,26 +21,26 @@ namespace Menu.Store.Controllers
     {
         private const int PlatformsPerRow = 3;
 
-        [SerializeField] private GameObject emptyItem;
+        [Header("Platform Information")]
         [SerializeField] private GameObject selectedItem;
-        [SerializeField] private GridLayoutGroup platformsItems;
         [SerializeField] private TextMeshProUGUI platformName;
+        [SerializeField] private TextMeshProUGUI priceLabel;
+
+        [Header("Messages")]
         [SerializeField] private TextMeshProUGUI selectMessage;
         [SerializeField] private TextMeshProUGUI failureMessage;
+
+        [Header("Platforms List")]
+        [SerializeField] private GridLayoutGroup platformsItems;
+        [SerializeField] private GameObject emptyItem;
+
+        [Header("Buttons")]
         [SerializeField] private Toggle activeToggle;
         [SerializeField] private Button buyButton;
-        [SerializeField] private Sprite coinIcon;
+
 
         private GameData _gameData;
         private Platform _currentPlatform;
-        private SVGImage _currencyIcon;
-        private TextMeshProUGUI _price;
-
-        private void Awake()
-        {
-            _currencyIcon = buyButton.transform.GetChild(1).GetChild(0).GetComponent<SVGImage>();
-            _price = buyButton.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
-        }
 
         private IEnumerator Start()
         {
@@ -46,15 +51,21 @@ namespace Menu.Store.Controllers
             AttachPlatforms();
 
             PlatformsPageEventSystem.Instance.OnPlatformSelected += SetSelectedPlatform;
+
+            SettingsEventSystem.Instance.OnGameDataUpdated += () =>
+            {
+                foreach (Transform child in platformsItems.transform)
+                    Destroy(child.gameObject);
+
+                AttachPlatforms();
+            };
         }
 
         private void AttachPlatforms()
         {
             foreach (var platform in _gameData.Platforms)
-            {
                 if (!platform.IsDefault)
                     Instantiate(platform.UiItemPrefab, platformsItems.transform);
-            }
 
             var platformsAmount = _gameData.Platforms.Length - 1;
             for (var i = 0; i < PlatformsPerRow - (platformsAmount % PlatformsPerRow); i++)
@@ -65,8 +76,8 @@ namespace Menu.Store.Controllers
         {
             _currentPlatform = null;
 
-            platformName.SetText("");
-            failureMessage.SetText("");
+            platformName.SetText(string.Empty);
+            failureMessage.SetText(string.Empty);
 
             selectMessage.gameObject.SetActive(true);
             failureMessage.gameObject.SetActive(false);
@@ -103,8 +114,7 @@ namespace Menu.Store.Controllers
 
             if (!platform.IsPurchased)
             {
-                _price.SetText(platform.Price.ToString());
-                _currencyIcon.sprite = coinIcon;
+                priceLabel.SetText(platform.Price.ToString());
 
                 buyButton.onClick.AddListener(ValidatePurchase);
             }
@@ -122,15 +132,18 @@ namespace Menu.Store.Controllers
 
             if (totalCoins >= platformPrice)
             {
-                var data = SaveSystem.Load();
+                var localData = LocalSaveSystem.LoadLocalData();
 
-                data.Coins -= platformPrice;
+                localData.SaveTime = DateTime.Now.Ticks;
+                localData.Coins -= platformPrice;
                 _gameData.Coins -= platformPrice;
 
-                data.Platforms.First(p => p.Id == _currentPlatform.Id).IsPurchased = true;
+                localData.Platforms.First(p => p.Id == _currentPlatform.Id).IsPurchased = true;
                 _currentPlatform.IsPurchased = true;
 
-                SaveSystem.Save(data);
+                if (PlayGamesServices.IsAuthenticated && InternetConnection.Available())
+                    PlayGamesServices.SaveCloudData(CloudData.FromLocalData(localData));
+                LocalSaveSystem.SaveLocalData(localData);
 
                 activeToggle.onValueChanged.RemoveAllListeners();
                 buyButton.onClick.RemoveAllListeners();
@@ -155,19 +168,19 @@ namespace Menu.Store.Controllers
 
                 var failureMessageTransform = failureMessage.GetComponent<RectTransform>();
                 failureMessageTransform.DOKill(true);
-                failureMessageTransform.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.125f, 0, 0), 0.5f, 2);
+                failureMessageTransform.GetComponent<RectTransform>().DOPunchScale(new Vector3(0.125f, 0, 0), 0.25f, 2);
             }
         }
 
         private void TogglePlatformActive(bool value)
         {
-            var data = SaveSystem.Load();
+            var localData = LocalSaveSystem.LoadLocalData();
 
-            data.Platforms.First(p => p.Id == _currentPlatform.Id).IsActive = value;
+            localData.Platforms.First(p => p.Id == _currentPlatform.Id).IsActive = value;
             _currentPlatform.IsActive = value;
 
-            SaveSystem.Save(data);
-            
+            LocalSaveSystem.SaveLocalData(localData);
+
             PlatformsPageEventSystem.Instance.ActivatePlatform(_currentPlatform);
         }
     }

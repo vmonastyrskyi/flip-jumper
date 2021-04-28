@@ -6,7 +6,7 @@ namespace Game.Player.Effects
 {
     public class ElectricityJumpEffect : Effect
     {
-        [SerializeField] private GameObject electricityJumpEffectPrefab;
+        [SerializeField] private GameObject electricityJumpEffectPrefab = null;
 
         private IEnumerator Start()
         {

@@ -9,12 +9,16 @@ namespace Game.Controllers
     public class PlatformController : MonoBehaviour
     {
         public JumpDirection Direction { get; set; }
+
         public string Guid { get; private set; }
+
         public bool Visited { private get; set; }
+
         public bool IsMoving
         {
             set => GetComponent<Moving>().enabled = value;
         }
+
         public Vector3 InitialPosition { get; private set; }
 
         private void Awake()
